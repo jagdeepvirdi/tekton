@@ -1,0 +1,11 @@
+# robots.txt — Tekton India
+# Update domain in Session 9
+
+User-agent: *
+Allow: /
+
+# Do not index the local admin tool
+Disallow: /admin.html
+
+# Sitemap location (update domain in Session 9)
+Sitemap: https://tektonindia.com/sitemap.xml

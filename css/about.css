@@ -1,0 +1,435 @@
+/* ============================================================
+   TEKTON INDIA — About Page
+   ============================================================ */
+
+.section-pad { padding: clamp(64px, 9vw, 120px) 0; }
+
+
+/* ── Hero ── */
+
+.about-hero {
+  padding: clamp(88px, 13vw, 148px) 0 clamp(64px, 9vw, 104px);
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 0%,
+      rgba(46, 204, 113, .065) 0%,
+      transparent 68%);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.about-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.about-hero-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7.5vw, 5.75rem);
+  font-weight: 300;
+  line-height: 1.08;
+  color: var(--color-text-primary);
+  margin: 14px 0 22px;
+  letter-spacing: -.01em;
+}
+
+.about-hero-heading em {
+  font-style: italic;
+  color: var(--color-brand);
+}
+
+.about-hero-sub {
+  font-size: clamp(.9375rem, 1.8vw, 1.125rem);
+  color: var(--color-text-muted);
+  max-width: 380px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+
+/* ── Origin Story ── */
+
+.about-origin { background: var(--color-bg); }
+
+.about-origin-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(44px, 7vw, 100px);
+  align-items: center;
+}
+
+.about-origin-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-origin-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 400;
+  margin: 14px 0 28px;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.about-origin-text p {
+  font-size: .9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin: 0 0 18px;
+}
+
+.about-origin-text p:last-child { margin-bottom: 0; }
+
+.about-origin-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about-origin-img-wrap {
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  position: relative;
+}
+
+/* Placeholder is always rendered, img covers it when it loads */
+.about-origin-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-origin-placeholder svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.about-origin-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.about-origin-caption {
+  font-size: .6875rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  margin: 0;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+
+/* ── Tagline Band ── */
+
+.about-tagline-band {
+  padding: clamp(40px, 6vw, 72px) 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+  overflow: hidden;
+}
+
+.about-tagline {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 4.5vw, 3.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+
+/* ── The Craft ── */
+
+.about-craft { background: var(--color-bg); }
+
+.about-section-header {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.about-section-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 400;
+  margin: 12px 0 0;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.craft-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.craft-step {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: clamp(24px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: border-color .22s;
+}
+
+.craft-step:hover { border-color: rgba(46, 204, 113, .45); }
+
+.craft-step-visual {
+  width: 96px;
+  height: 72px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.craft-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.craft-step-num {
+  font-size: .625rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--color-brand);
+  text-transform: uppercase;
+}
+
+.craft-step h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.craft-step p {
+  font-size: .9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+
+/* ── Values ── */
+
+.about-values { background: var(--color-surface); }
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.5vw, 36px);
+}
+
+.value-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: clamp(28px, 3.5vw, 44px) clamp(22px, 2.5vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color .22s, transform .22s;
+}
+
+.value-card:hover {
+  border-color: rgba(46, 204, 113, .45);
+  transform: translateY(-4px);
+}
+
+.value-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: rgba(46, 204, 113, .08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.value-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.value-card p {
+  font-size: .9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+
+/* ── Find Us ── */
+
+.about-find { background: var(--color-bg); }
+
+.about-find-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: clamp(44px, 7vw, 96px);
+  align-items: start;
+}
+
+.about-find-info h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  margin: 14px 0 18px;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.about-find-intro {
+  font-size: .9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin: 0 0 28px;
+}
+
+.about-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-style: normal;
+}
+
+.about-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: .9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.about-contact-item svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--color-brand);
+}
+
+.about-contact-item a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color .18s;
+}
+
+.about-contact-item a:hover { color: var(--color-brand); }
+
+.about-find-cta {
+  display: inline-block;
+  margin-top: 28px;
+}
+
+.about-find-map {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  line-height: 0;
+}
+
+.about-find-map iframe {
+  display: block;
+  width: 100%;
+  height: 420px;
+  border: 0;
+  /* CSS trick to give Google Maps a dark-ish appearance on a dark site */
+  filter: invert(90%) hue-rotate(180deg) grayscale(.15);
+}
+
+
+/* ── Built-by credit ── */
+
+.about-built-by {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 18px 0;
+}
+
+.about-built-by-inner {
+  display: flex;
+  justify-content: center;
+}
+
+.about-built-by p {
+  font-size: .8125rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  text-align: center;
+  letter-spacing: .02em;
+}
+
+.about-built-by a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color .18s;
+}
+
+.about-built-by a:hover { color: var(--color-brand); }
+
+
+/* ── Responsive ── */
+
+@media (max-width: 960px) {
+  .about-origin-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-origin-visual {
+    order: -1;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .craft-steps { grid-template-columns: 1fr; }
+
+  .values-grid { grid-template-columns: 1fr 1fr; }
+
+  .about-find-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-hero-heading { font-size: 2.25rem; }
+  .about-tagline { font-size: 1.5rem; }
+  .values-grid { grid-template-columns: 1fr; }
+  .craft-step { padding: 24px; }
+  .value-card { padding: 24px 20px; }
+
+  .about-find-map iframe { height: 300px; }
+}
+
+@media (max-width: 400px) {
+  .about-hero-heading { font-size: 2rem; }
+}

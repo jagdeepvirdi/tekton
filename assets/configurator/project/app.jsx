@@ -1,0 +1,302 @@
+/* ============================================================
+   app.jsx — main application
+   ============================================================ */
+const { useState, useEffect, useRef } = React;
+
+const FONT_PAIRS = {
+  editorial: { display: '"Bricolage Grotesque", serif', body: '"Hanken Grotesk", sans-serif' },
+  grotesque: { display: '"Space Grotesk", sans-serif', body: '"Space Grotesk", sans-serif' },
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#2ECC71",
+  "typeScale": 1,
+  "fontPair": "editorial",
+  "floorGrid": true
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  const [cfg, setCfg] = useState({
+    type: "dining",
+    shape: "rect", shapeLocked: false,
+    length: 220, width: 100, thickness: 5,
+    layout: "river", wood: "walnut",
+    gap: 11, bandResin: 0.34, frameW: 12, trunkSize: "md",
+    riverFlow: "organic", riverCount: 1, riverAngle: 0, riverOffset: 0,
+    plankSpread: 0.30, frames: 5,
+    resinColor: "#1763B8", resinOpacity: 0.85, metallic: false,
+    edge: "live", base: "hairpin",
+  });
+
+  const [openId, setOpenId] = useState("type");
+  const [touched, setTouched] = useState(new Set(["type"]));
+  const [modal, setModal] = useState(false);
+  const reviewRef = useRef(null);
+
+  /* ---- apply tweaks to :root ---- */
+  useEffect(() => {
+    const r = document.documentElement.style;
+    r.setProperty("--accent", t.accent);
+    r.setProperty("--type-scale", t.typeScale);
+    document.body.style.fontSize = `${16 * t.typeScale}px`;
+    const fp = FONT_PAIRS[t.fontPair] || FONT_PAIRS.editorial;
+    r.setProperty("--font-display", fp.display);
+    r.setProperty("--font-body", fp.body);
+  }, [t.accent, t.typeScale, t.fontPair]);
+
+  /* ---- actions ---- */
+  const markTouched = (id) => setTouched((s) => new Set(s).add(id));
+  const openSection = (id) => { setOpenId(id); if (id) markTouched(id); };
+
+  const actions = {
+    set: (partial) => { setCfg((c) => ({ ...c, ...partial })); markTouched(openId); },
+    setType: (id) => {
+      const ty = TABLE_TYPES.find((x) => x.id === id);
+      setCfg((c) => (c.layout === "cookie"
+        ? { ...c, type: id, thickness: ty.dims.thickness }   // keep cookie diameter
+        : { ...c, type: id, ...ty.dims }));
+      markTouched("type");
+    },
+    setShape: (id) => {
+      const sh = SHAPES.find((x) => x.id === id);
+      if (id === "trunk") {
+        const cm = (TRUNK_SIZES.find((s) => s.id === "md")).cm;
+        setCfg((c) => ({ ...c, shape: "trunk", shapeLocked: true, layout: "cookie", trunkSize: c.trunkSize || "md", length: cm, width: cm, edge: "live" }));
+      } else {
+        setCfg((c) => {
+          if (c.layout === "cookie") {
+            // leaving the cookie form — restore a standard pattern + rectangular dims
+            const ty = TABLE_TYPES.find((x) => x.id === c.type);
+            return { ...c, shape: id, shapeLocked: sh.locked, layout: "river", ...ty.dims };
+          }
+          return { ...c, shape: id, shapeLocked: sh.locked };
+        });
+      }
+      markTouched("shape");
+    },
+    setPattern: (id) => {
+      if (id === "cookie") {
+        const cm = (TRUNK_SIZES.find((s) => s.id === "md")).cm;
+        setCfg((c) => ({ ...c, layout: "cookie", shape: "trunk", shapeLocked: true, trunkSize: c.trunkSize || "md", length: cm, width: cm, edge: "live" }));
+      } else {
+        setCfg((c) => {
+          if (c.layout === "cookie") {
+            // leaving cookie — restore sensible rectangular defaults from type
+            const ty = TABLE_TYPES.find((x) => x.id === c.type);
+            return { ...c, layout: id, shape: "rect", shapeLocked: false, ...ty.dims };
+          }
+          return { ...c, layout: id };
+        });
+      }
+      markTouched("wood");
+    },
+    setTrunk: (id) => {
+      const cm = (TRUNK_SIZES.find((s) => s.id === id)).cm;
+      setCfg((c) => ({ ...c, trunkSize: id, length: cm, width: cm }));
+      markTouched("size");
+    },
+  };
+
+  const price = computePrice(cfg);
+  const isCookie = cfg.layout === "cookie";
+  const effW = (cfg.shapeLocked || isCookie) ? cfg.length : cfg.width;
+
+  /* ---- price flash ---- */
+  const [flash, setFlash] = useState(false);
+  const prevTotal = useRef(price.total);
+  useEffect(() => {
+    if (prevTotal.current !== price.total) { setFlash(true); const id = setTimeout(() => setFlash(false), 520); prevTotal.current = price.total; return () => clearTimeout(id); }
+  }, [price.total]);
+
+  const wood = WOODS.find((w) => w.id === cfg.wood);
+  const type = TABLE_TYPES.find((x) => x.id === cfg.type);
+  const shape = SHAPES.find((s) => s.id === cfg.shape);
+  const layout = LAYOUTS.find((l) => l.id === cfg.layout);
+  const rColor = RESIN_COLORS.find((c) => c.hex.toLowerCase() === cfg.resinColor.toLowerCase());
+  const edge = EDGES.find((e) => e.id === cfg.edge);
+  const base = BASES.find((b) => b.id === cfg.base);
+  const trunk = TRUNK_SIZES.find((s) => s.id === cfg.trunkSize) || TRUNK_SIZES[1];
+
+  const specs = [
+    ["Type", type.name],
+    ["Shape", isCookie ? "Tree Trunk / Cookie" : shape.name],
+    ["Dimensions", isCookie ? `⌀ ${cfg.length} cm (${trunk.name}) · ${cfg.thickness} cm thick` : `${cfg.length} × ${effW} × ${cfg.thickness} cm`],
+    ["Surface area", `${price.areaM2.toFixed(2)} m²`],
+    ["Pattern", layout.label],
+    ["Wood", wood.name],
+    ["Resin", `${rColor ? rColor.name + " · " + rColor.coll : "Custom " + cfg.resinColor.toUpperCase()} · ${Math.round(cfg.resinOpacity * 100)}%${cfg.metallic ? " · Metallic" : ""}`],
+    ["Edge", isCookie ? "Natural live edge" : edge.name],
+    ["Base", base.name],
+  ];
+
+  const scrollToReview = () => reviewRef.current && reviewRef.current.scrollIntoView ? reviewRef.current.parentElement.scrollTo({ top: reviewRef.current.offsetTop - 12, behavior: "smooth" }) : null;
+
+  return (
+    <div className="app" data-grid={t.floorGrid ? "on" : "off"}>
+      {/* ---------- top bar ---------- */}
+      <header className="topbar">
+        <div className="logo">
+          <span className="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 8h18M6 8v10M18 8v10M3 18h18" stroke="var(--text-dim)" strokeWidth="1.6" strokeLinecap="round" /><circle cx="12" cy="13" r="3" fill="var(--accent)" /></svg></span>
+          <div>
+            <div className="eyebrow">Handcrafted by</div>
+            <div className="mark">TEKT<span className="dot" />N</div>
+            <div className="sub">★ INDIA ★</div>
+          </div>
+        </div>
+        <div className="right">
+          <span className="tagline">Bespoke resin &amp; wood, made to order</span>
+          <button className="btn ghost" type="button" onClick={() => setModal(true)}>Request a quote</button>
+        </div>
+      </header>
+
+      {/* ---------- split ---------- */}
+      <div className="split">
+        {/* live preview */}
+        <div className="stage">
+          <div className="stage-label"><span className="live" /> Live preview · top view</div>
+          <div className="stage-inner"><TablePreview cfg={cfg} accent={t.accent} /></div>
+        </div>
+
+        {/* options */}
+        <aside className="panel">
+          <div className="panel-head">
+            <h2>Design your table</h2>
+            <p>Every Tekton piece is made to order. Shape it below — the preview &amp; price update live.</p>
+            <Progress steps={STEPS} openId={openId} doneSet={touched} onJump={openSection} />
+          </div>
+
+          <div className="panel-scroll scroll">
+            <Configurator cfg={cfg} actions={actions} openId={openId} setOpenId={openSection} />
+
+            {/* review card */}
+            <div className="review" ref={reviewRef} style={{ marginTop: 24 }}>
+              <h3>Review your design</h3>
+              <div className="rsub">Your bespoke specification</div>
+              {specs.map(([k, v]) => (
+                <div className="spec-row" key={k}><span className="k">{k}</span><span className="vv">{v}</span></div>
+              ))}
+              <div className="breakdown">
+                {price.breakdown.map((b, i) => (
+                  <div className="bd-row" key={i}><span>{b.label}</span><span className="mono">{formatINR(b.value)}</span></div>
+                ))}
+                <div className="bd-total"><span className="pl mono" style={{ color: "var(--text-dim)" }}>Estimated total</span><span className="price">{formatINR(price.total)}</span></div>
+              </div>
+              <button className="btn primary block" type="button" onClick={() => setModal(true)}>Request my quote →</button>
+              <div className="hint" style={{ marginTop: 12, justifyContent: "center" }}>Indicative estimate · final quote confirmed by our workshop.</div>
+            </div>
+          </div>
+
+          {/* sticky summary */}
+          <div className="summary">
+            <div>
+              <div className="pl">Estimated total</div>
+              <span className={"price" + (flash ? " flash" : "")} key={price.total}>{formatINR(price.total)}</span>
+              <div className="est">{type.name} · {wood.name} · {price.areaM2.toFixed(2)} m²</div>
+            </div>
+            <button className="btn primary" type="button" onClick={() => setModal(true)}>Request quote</button>
+          </div>
+        </aside>
+      </div>
+
+      {modal && <QuoteModal cfg={cfg} specs={specs} price={price} onClose={() => setModal(false)} />}
+
+      {/* ---------- Tweaks ---------- */}
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Brand" />
+        <TweakColor label="Accent" value={t.accent} options={["#2ECC71", "#0E7C86", "#C8791B", "#7A5AE0"]} onChange={(v) => setTweak("accent", v)} />
+        <TweakSection label="Typography" />
+        <TweakRadio label="Type pairing" value={t.fontPair} options={["editorial", "grotesque"]} onChange={(v) => setTweak("fontPair", v)} />
+        <TweakSlider label="Type scale" value={t.typeScale} min={0.9} max={1.15} step={0.05} onChange={(v) => setTweak("typeScale", v)} />
+        <TweakSection label="Preview" />
+        <TweakToggle label="Floor grid" value={t.floorGrid} onChange={(v) => setTweak("floorGrid", v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+/* ============================================================
+   Quote modal
+   ============================================================ */
+function QuoteModal({ cfg, specs, price, onClose }) {
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", notes: "" });
+  const [err, setErr] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [submitErr, setSubmitErr] = useState(false);
+  const submit = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = 1;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) e.email = 1;
+    setErr(e);
+    if (Object.keys(e).length) return;
+    setLoading(true);
+    setSubmitErr(false);
+    const data = new FormData();
+    data.append("name", form.name);
+    data.append("email", form.email);
+    data.append("_subject", "Custom Table Quote — Tekton India");
+    if (form.notes) data.append("notes", form.notes);
+    specs.forEach(([k, v]) => data.append(k, v));
+    data.append("estimated_price", formatINR(price.total));
+    fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
+      method: "POST",
+      body: data,
+      headers: { Accept: "application/json" },
+    })
+      .then((r) => { setLoading(false); r.ok ? setSent(true) : setSubmitErr(true); })
+      .catch(() => { setLoading(false); setSubmitErr(true); });
+  };
+  return (
+    <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal" role="dialog" aria-modal="true">
+        {!sent ? (
+          <>
+            <h3>Request my quote</h3>
+            <p className="msub">Send us your design and we’ll confirm pricing, timeline &amp; finishes within 2 working days.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div>
+                <label className="flbl">Full name</label>
+                <input className="inp" value={form.name} placeholder="Aarav Mehta" style={err.name ? { borderColor: "var(--dot)" } : {}} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              </div>
+              <div>
+                <label className="flbl">Email</label>
+                <input className="inp" value={form.email} placeholder="you@example.com" style={err.email ? { borderColor: "var(--dot)" } : {}} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              </div>
+              <div>
+                <label className="flbl">Notes <span style={{ color: "var(--text-faint)" }}>(optional)</span></label>
+                <textarea className="inp" value={form.notes} placeholder="Delivery city, deadline, finish preferences…" onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+              </div>
+            </div>
+            <div className="breakdown" style={{ marginTop: 18 }}>
+              <div className="bd-row" style={{ color: "var(--text-dim)" }}><span>{specs[0][1]} · {specs[5][1]}</span><span className="mono">{specs[2][1].split(" · ")[0]}</span></div>
+              <div className="bd-total" style={{ paddingTop: 10, marginTop: 6 }}><span className="pl mono" style={{ color: "var(--text-dim)" }}>Estimate</span><span className="price" style={{ fontSize: 22 }}>{formatINR(price.total)}</span></div>
+            </div>
+            {submitErr && (
+              <p style={{ color: "var(--dot)", fontSize: 12, marginTop: 12, marginBottom: 0, lineHeight: 1.5 }}>
+                Submission failed. Please email us at{" "}
+                <a href="mailto:tektonindia.biz@gmail.com" style={{ color: "inherit" }}>tektonindia.biz@gmail.com</a>.
+              </p>
+            )}
+            <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+              <button className="btn ghost" type="button" onClick={onClose} disabled={loading} style={{ flex: "0 0 auto" }}>Cancel</button>
+              <button className="btn primary block" type="button" onClick={submit} disabled={loading}>
+                {loading ? "Sending…" : "Send request →"}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div style={{ textAlign: "center", padding: "10px 0" }}>
+            <div className="done-tick">✓</div>
+            <h3>Request received</h3>
+            <p className="msub" style={{ maxWidth: 320, margin: "8px auto 0" }}>Thank you, {form.name.split(" ")[0]}. Our workshop will reach out at <b style={{ color: "var(--text)" }}>{form.email}</b> within 2 working days with your confirmed quote.</p>
+            <button className="btn primary block" type="button" onClick={onClose} style={{ marginTop: 24 }}>Done</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);

@@ -1,0 +1,119 @@
+/* ============================================================
+   TEKTON INDIA — Configurator Page
+   Resolves CSS conflicts between main.css and the configurator's
+   ds.css / ui.css, then scopes each set of tokens to its context.
+   ============================================================ */
+
+/* ── Restore site CSS variables overridden by ds.css on :root ── */
+:root {
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --radius:       10px;
+  --radius-sm:    6px;
+
+  /* Fixed height of the cfg-header strip — used to size .app */
+  --cfg-header-h: 88px;
+}
+
+/* ds.css sets h1-h4 { font-weight: 700 } globally.
+   Restore the site's 400-weight outside .app. */
+h1, h2, h3, h4, h5 {
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/* Re-apply configurator bold headings only inside .app */
+.app h1, .app h2, .app h3, .app h4 {
+  font-weight: 700;
+  line-height: inherit;
+}
+
+
+/* ── Scope the configurator's own design tokens to .app ── */
+.app {
+  --font-display: "Bricolage Grotesque", Georgia, serif;
+  --font-body:    "Hanken Grotesk", system-ui, sans-serif;
+  --radius:       14px;
+  --radius-sm:    9px;
+
+  /* Fill the viewport below site nav + page header */
+  height: calc(100vh - var(--nav-h) - var(--cfg-header-h)) !important;
+}
+
+/* Hide the configurator's built-in topbar — the site nav replaces it */
+.app .topbar { display: none !important; }
+
+/* Hide the Claude Design tweaks panel from the public site */
+.twk-panel { display: none !important; }
+
+
+/* ── Page header strip ── */
+.cfg-header {
+  height: var(--cfg-header-h);
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border-soft);
+  flex-shrink: 0;
+}
+
+.cfg-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.cfg-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.cfg-header-text .eyebrow {
+  margin-bottom: 0;
+}
+
+.cfg-header-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.cfg-header-desc {
+  font-size: .875rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  max-width: 440px;
+  margin: 0;
+}
+
+/* Footer is below the configurator's viewport-filling area.
+   It's intentionally accessible by scrolling on desktop. */
+.site-footer {
+  margin-top: 0;
+}
+
+
+/* ── Responsive ── */
+
+/* On tablet/mobile, ui.css already sets .app to height:auto / overflow:visible */
+@media (max-width: 940px) {
+  .app { height: auto !important; }
+}
+
+@media (max-width: 768px) {
+  .cfg-header-desc { display: none; }
+}
+
+@media (max-width: 600px) {
+  :root { --cfg-header-h: 64px; }
+  .cfg-header { height: var(--cfg-header-h); }
+  .cfg-header-title { font-size: 1.125rem; }
+}

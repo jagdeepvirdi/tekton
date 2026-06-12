@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex nofollow">
+  <title>Admin — Tekton India</title>
+  <style>
+    /* ─────────────────────────────────────────
+       Self-contained admin styles
+       Do NOT import main.css — this page is
+       local-only and must work standalone.
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d0e10;
+      --surface:    #16181c;
+      --surface-2:  #1c1e23;
+      --border:     #2a2c32;
+      --border-soft:#22242a;
+      --green:      #2ECC71;
+      --green-dim:  rgba(46,204,113,.1);
+      --red:        #e05252;
+      --text:       #e8e9eb;
+      --muted:      #8a8b92;
+      --faint:      #444650;
+      --radius:     8px;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      height: 100%;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Password overlay ── */
+    #pwd-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 24px;
+    }
+
+    .pwd-box {
+      width: 100%;
+      max-width: 380px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pwd-box h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: .04em;
+    }
+
+    .pwd-box .pwd-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .pwd-box .pwd-logo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .pwd-box p {
+      font-size: .875rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .pwd-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: .9375rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+    }
+
+    .pwd-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(46,204,113,.12);
+    }
+
+    .pwd-error {
+      font-size: .8125rem;
+      color: var(--red);
+      display: none;
+    }
+
+    .pwd-submit {
+      background: var(--green);
+      color: #06140c;
+      border: none;
+      border-radius: var(--radius);
+      padding: 11px 24px;
+      font-weight: 600;
+      font-size: .875rem;
+      letter-spacing: .04em;
+      transition: opacity .18s, transform .18s;
+    }
+
+    .pwd-submit:hover { opacity: .9; transform: translateY(-1px); }
+    .pwd-submit:active { transform: none; }
+
+
+    /* ── Admin app (hidden until auth) ── */
+    #admin-app {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    /* ── Header bar ── */
+    .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(13,14,16,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-soft);
+      padding: 0 clamp(16px, 3vw, 40px);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .admin-header-title {
+      font-size: .9375rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .admin-header-title span {
+      color: var(--green);
+      margin-right: 4px;
+    }
+
+    #stats-bar {
+      font-size: .75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .admin-header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    #modified-indicator {
+      font-size: .75rem;
+      color: #f0c040;
+      display: none;
+      white-space: nowrap;
+    }
+
+    .btn-export {
+      background: var(--green);
+      color: #06140c;
+      border: none;
+      border-radius: var(--radius);
+      padding: 8px 18px;
+      font-size: .8125rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      transition: opacity .18s;
+    }
+
+    .btn-export:hover { opacity: .88; }
+
+    .btn-logout {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      padding: 7px 14px;
+      font-size: .8125rem;
+      transition: color .18s, border-color .18s;
+    }
+
+    .btn-logout:hover { color: var(--text); border-color: var(--muted); }
+
+
+    /* ── Main content ── */
+    .admin-main {
+      padding: 24px clamp(16px, 3vw, 40px) 60px;
+    }
+
+    .admin-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .8125rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .admin-status .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    #loading-msg {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--muted);
+    }
+
+    .error-msg {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--red);
+    }
+
+
+    /* ── Products table ── */
+    #table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+    }
+
+    #products-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .8125rem;
+    }
+
+    #products-table thead th {
+      background: var(--surface);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border-soft);
+      position: sticky;
+      top: 60px;
+      z-index: 10;
+    }
+
+    #products-table thead th:first-child { border-radius: 10px 0 0 0; }
+    #products-table thead th:last-child  { border-radius: 0 10px 0 0; }
+
+    #products-table tbody tr {
+      border-bottom: 1px solid var(--border-soft);
+      transition: background .15s;
+    }
+
+    #products-table tbody tr:last-child { border-bottom: none; }
+
+    #products-table tbody tr:hover { background: var(--surface-2); }
+
+    #products-table td {
+      padding: 12px 16px;
+      vertical-align: middle;
+    }
+
+    /* Name + ID cell */
+    .col-name { min-width: 180px; }
+
+    .p-name {
+      display: block;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .p-id {
+      display: block;
+      font-size: .6875rem;
+      color: var(--faint);
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Category badge */
+    .cat-badge {
+      display: inline-block;
+      padding: 3px 9px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: .6875rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* Pattern tag */
+    .pattern-tag {
+      font-size: .75rem;
+      color: var(--muted);
+    }
+
+    /* Price input */
+    .price-input {
+      width: 110px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: .8125rem;
+      padding: 7px 10px;
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      -moz-appearance: textfield;
+    }
+
+    .price-input::-webkit-inner-spin-button,
+    .price-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    .price-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(46,204,113,.12);
+    }
+
+    .price-input.changed { border-color: #f0c040; }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .toggle input { display: none; }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+
+    .toggle-track::before {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      left: 3px;
+      top: 3px;
+      background: var(--faint);
+      border-radius: 50%;
+      transition: transform .2s, background .2s;
+    }
+
+    .toggle input:checked + .toggle-track {
+      background: var(--green-dim);
+      border-color: rgba(46,204,113,.4);
+    }
+
+    .toggle input:checked + .toggle-track::before {
+      transform: translateX(16px);
+      background: var(--green);
+    }
+
+    .col-stock, .col-feat { text-align: center; width: 80px; }
+    .col-orig { min-width: 130px; }
+
+    /* Status select */
+    .status-select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: .8125rem;
+      padding: 7px 10px;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color .18s, box-shadow .18s;
+    }
+
+    .status-select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(46,204,113,.12);
+    }
+
+    .status-select.status-archived {
+      color: #c8a882;
+      border-color: rgba(139, 94, 60, .4);
+      background: rgba(139, 94, 60, .08);
+    }
+
+    /* ── Search / filter bar ── */
+    .admin-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .admin-search {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: .875rem;
+      padding: 9px 14px;
+      outline: none;
+      width: 240px;
+      transition: border-color .18s;
+    }
+
+    .admin-search:focus { border-color: var(--green); }
+    .admin-search::placeholder { color: var(--faint); }
+
+    .admin-filter {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: .8125rem;
+      padding: 9px 14px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      transition: border-color .18s;
+    }
+
+    .admin-filter:focus { border-color: var(--green); }
+
+    .admin-result-count {
+      font-size: .75rem;
+      color: var(--faint);
+      margin-left: auto;
+    }
+
+    /* ── No results ── */
+    .no-results-row td {
+      text-align: center;
+      padding: 48px;
+      color: var(--muted);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      #stats-bar { display: none; }
+      .btn-export { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     PASSWORD OVERLAY
+════════════════════════════════════════════ -->
+<div id="pwd-overlay">
+  <div class="pwd-box">
+    <div class="pwd-logo">
+      <div class="pwd-logo-dot"></div>
+      <h1>Tekton Admin</h1>
+    </div>
+    <p>This tool is for local product management only. Enter the admin password to continue.</p>
+    <input type="password" id="pwd-input" class="pwd-input"
+           placeholder="Password" autocomplete="current-password">
+    <div id="pwd-error" class="pwd-error">Incorrect password. Please try again.</div>
+    <button id="pwd-submit" class="pwd-submit">Enter →</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     ADMIN APP
+════════════════════════════════════════════ -->
+<div id="admin-app">
+
+  <!-- ── Header ── -->
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <div class="admin-header-title"><span>●</span> Tekton Admin</div>
+      <div id="stats-bar">Loading…</div>
+    </div>
+    <div class="admin-header-right">
+      <div id="modified-indicator">● Unsaved changes</div>
+      <button id="export-btn" class="btn-export">↓ Export products.json</button>
+      <button id="logout-btn" class="btn-logout" title="Lock admin">Lock</button>
+    </div>
+  </header>
+
+  <!-- ── Main ── -->
+  <main class="admin-main">
+
+    <div class="admin-status">
+      <div class="dot"></div>
+      <span>Local admin tool &mdash; not visible to the public &mdash; edits are exported as products.json</span>
+    </div>
+
+    <div class="admin-toolbar">
+      <input type="search" id="admin-search" class="admin-search"
+             placeholder="Search by name or ID…" autocomplete="off">
+      <select id="cat-filter" class="admin-filter">
+        <option value="">All categories</option>
+        <option value="dining-table">Dining Tables</option>
+        <option value="coffee-table">Coffee Tables</option>
+        <option value="centre-table">Centre Tables</option>
+        <option value="end-table">End &amp; Side Tables</option>
+        <option value="console-table">Console Tables</option>
+      </select>
+      <select id="stock-filter" class="admin-filter">
+        <option value="">All stock</option>
+        <option value="in-stock">In Stock</option>
+        <option value="made-to-order">Made to Order</option>
+      </select>
+      <span id="result-count" class="admin-result-count"></span>
+    </div>
+
+    <div id="loading-msg">Loading products&hellip;</div>
+    <div id="error-msg" class="error-msg" style="display:none">
+      Failed to load data/products.json.<br>
+      Make sure you are running this page through a local server (not file://).
+    </div>
+
+    <div id="table-wrap" style="display:none">
+      <table id="products-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price (₹)</th>
+            <th>Original Price (₹)</th>
+            <th>In Stock</th>
+            <th>Featured</th>
+            <th>Status</th>
+            <th>Pattern</th>
+          </tr>
+        </thead>
+        <tbody id="products-tbody"></tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+
+<script>
+(function () {
+  'use strict';
+
+  /* ─── State ─── */
+  var products = [];
+  var modified = false;
+
+  /* ─── Element refs ─── */
+  var overlay   = document.getElementById('pwd-overlay');
+  var pwdInput  = document.getElementById('pwd-input');
+  var pwdError  = document.getElementById('pwd-error');
+  var adminApp  = document.getElementById('admin-app');
+
+  /* ─────────────────────────
+     PASSWORD GATE
+  ───────────────────────── */
+  pwdInput.focus();
+
+  document.getElementById('pwd-submit').addEventListener('click', authenticate);
+
+  pwdInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') authenticate();
+    pwdError.style.display = 'none';
+  });
+
+  function authenticate() {
+    if (pwdInput.value === 'tekton2024') {
+      overlay.style.display = 'none';
+      adminApp.style.display = 'flex';
+      loadProducts();
+    } else {
+      pwdError.style.display = 'block';
+      pwdInput.value = '';
+      pwdInput.focus();
+    }
+  }
+
+  document.getElementById('logout-btn').addEventListener('click', function () {
+    adminApp.style.display = 'none';
+    pwdInput.value = '';
+    pwdError.style.display = 'none';
+    overlay.style.display = 'flex';
+    pwdInput.focus();
+    products = [];
+    modified = false;
+  });
+
+
+  /* ─────────────────────────
+     LOAD PRODUCTS
+  ───────────────────────── */
+  function loadProducts() {
+    fetch('data/products.json?_=' + Date.now())
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        products = data;
+        document.getElementById('loading-msg').style.display = 'none';
+        document.getElementById('table-wrap').style.display = 'block';
+        renderTable(products);
+        updateStats();
+      })
+      .catch(function (e) {
+        console.error(e);
+        document.getElementById('loading-msg').style.display = 'none';
+        document.getElementById('error-msg').style.display = 'block';
+      });
+  }
+
+
+  /* ─────────────────────────
+     RENDER TABLE
+  ───────────────────────── */
+  function renderTable(list) {
+    var tbody = document.getElementById('products-tbody');
+    document.getElementById('result-count').textContent =
+      list.length + ' of ' + products.length + ' product' + (products.length !== 1 ? 's' : '');
+
+    if (list.length === 0) {
+      tbody.innerHTML = '<tr class="no-results-row"><td colspan="8">No products match your filters.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = list.map(function (p) {
+      var idx = products.indexOf(p);
+      var origVal = (p.originalPrice != null && p.originalPrice > 0) ? p.originalPrice : '';
+      var status = p.status || 'active';
+      return '<tr data-index="' + idx + '">' +
+        '<td class="col-name">' +
+          '<span class="p-name">' + esc(p.name) + '</span>' +
+          '<span class="p-id">' + esc(p.id) + '</span>' +
+        '</td>' +
+        '<td><span class="cat-badge">' + esc(p.category) + '</span></td>' +
+        '<td class="col-price">' +
+          '<input type="number" class="price-input" value="' + p.price + '" ' +
+                 'min="0" step="100" data-field="price" aria-label="Price for ' + esc(p.name) + '">' +
+        '</td>' +
+        '<td class="col-orig">' +
+          '<input type="number" class="price-input" value="' + origVal + '" ' +
+                 'min="0" step="100" placeholder="—" data-field="originalPrice" ' +
+                 'aria-label="Original price for ' + esc(p.name) + '">' +
+        '</td>' +
+        '<td class="col-stock">' +
+          '<label class="toggle" title="' + (p.inStock ? 'In stock' : 'Made to order') + '">' +
+            '<input type="checkbox" ' + (p.inStock ? 'checked' : '') + ' data-field="inStock" ' +
+                   'aria-label="In stock: ' + esc(p.name) + '">' +
+            '<span class="toggle-track"></span>' +
+          '</label>' +
+        '</td>' +
+        '<td class="col-feat">' +
+          '<label class="toggle" title="' + (p.featured ? 'Featured' : 'Not featured') + '">' +
+            '<input type="checkbox" ' + (p.featured ? 'checked' : '') + ' data-field="featured" ' +
+                   'aria-label="Featured: ' + esc(p.name) + '">' +
+            '<span class="toggle-track"></span>' +
+          '</label>' +
+        '</td>' +
+        '<td>' +
+          '<select class="status-select' + (status === 'archived' ? ' status-archived' : '') + '" ' +
+                  'data-field="status" aria-label="Status for ' + esc(p.name) + '">' +
+            '<option value="active"' + (status === 'active' ? ' selected' : '') + '>Active</option>' +
+            '<option value="archived"' + (status === 'archived' ? ' selected' : '') + '>Archived</option>' +
+          '</select>' +
+        '</td>' +
+        '<td class="col-pattern"><span class="pattern-tag">' + esc(p.resinPattern) + '</span></td>' +
+      '</tr>';
+    }).join('');
+
+    /* Bind change handlers (inputs + selects) */
+    tbody.querySelectorAll('input, select').forEach(function (el) {
+      el.addEventListener('change', function () {
+        var row   = el.closest('tr');
+        var idx   = parseInt(row.dataset.index, 10);
+        var field = el.dataset.field;
+
+        if (el.tagName === 'SELECT') {
+          products[idx][field] = el.value;
+          el.className = 'status-select' + (el.value === 'archived' ? ' status-archived' : '');
+        } else if (el.type === 'checkbox') {
+          products[idx][field] = el.checked;
+        } else {
+          var v = el.value.trim();
+          products[idx][field] = (v === '' || v === '0') ? null : parseInt(v, 10);
+        }
+
+        markModified();
+        updateStats();
+      });
+    });
+  }
+
+
+  /* ─────────────────────────
+     FILTER + SEARCH
+  ───────────────────────── */
+  function getFiltered() {
+    var q     = (document.getElementById('admin-search').value || '').toLowerCase().trim();
+    var cat   = document.getElementById('cat-filter').value;
+    var stock = document.getElementById('stock-filter').value;
+
+    return products.filter(function (p) {
+      if (q && p.name.toLowerCase().indexOf(q) === -1 && p.id.toLowerCase().indexOf(q) === -1) return false;
+      if (cat && p.category !== cat) return false;
+      if (stock === 'in-stock' && !p.inStock) return false;
+      if (stock === 'made-to-order' && p.inStock) return false;
+      return true;
+    });
+  }
+
+  function applyFilters() { renderTable(getFiltered()); }
+
+  document.getElementById('admin-search').addEventListener('input',  applyFilters);
+  document.getElementById('cat-filter').addEventListener('change',   applyFilters);
+  document.getElementById('stock-filter').addEventListener('change', applyFilters);
+
+
+  /* ─────────────────────────
+     STATS + MODIFIED STATE
+  ───────────────────────── */
+  function updateStats() {
+    var inStock  = products.filter(function (p) { return p.inStock; }).length;
+    var featured = products.filter(function (p) { return p.featured; }).length;
+    document.getElementById('stats-bar').textContent =
+      products.length + ' products · ' + inStock + ' in stock · ' + featured + ' featured';
+  }
+
+  function markModified() {
+    modified = true;
+    document.getElementById('modified-indicator').style.display = 'block';
+  }
+
+
+  /* ─────────────────────────
+     EXPORT JSON
+  ───────────────────────── */
+  document.getElementById('export-btn').addEventListener('click', function () {
+    var json = JSON.stringify(products, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'products.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    modified = false;
+    document.getElementById('modified-indicator').style.display = 'none';
+  });
+
+
+  /* ─────────────────────────
+     WARN ON UNLOAD
+  ───────────────────────── */
+  window.addEventListener('beforeunload', function (e) {
+    if (modified) {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes. Export products.json before leaving.';
+    }
+  });
+
+
+  /* ─────────────────────────
+     UTILITIES
+  ───────────────────────── */
+  function esc(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+})();
+</script>
+</body>
+</html>

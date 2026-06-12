@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Collection — Tekton India</title>
+  <meta name="description" content="Browse all 22 handcrafted resin and wood tables by Tekton India — river tables, coffee tables, end tables, dining tables and more. Filter by category, pattern, and availability.">
+  <!-- Open Graph / Social sharing (update domain in Session 9) -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Tekton India">
+  <meta property="og:title"       content="Our Collection — Tekton India">
+  <meta property="og:description" content="Browse 22 handcrafted resin and wood tables by Tekton India — river tables, coffee tables, end tables, dining tables and more.">
+  <meta property="og:image"       content="https://tektonindia.com/images/brand/og-image.jpg">
+  <meta property="og:url"         content="https://tektonindia.com/products.html">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Our Collection — Tekton India">
+  <meta name="twitter:description" content="Browse 22 handcrafted resin and wood tables by Tekton India — river tables, coffee tables, end tables, dining tables and more.">
+  <meta name="twitter:image"       content="https://tektonindia.com/images/brand/og-image.jpg">
+  <link rel="canonical"            href="https://tektonindia.com/products.html">
+  <meta name="theme-color"         content="#0A0B0D">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/products.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<header class="site-nav" role="banner">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Tekton India — Home">
+      <img src="images/brand/logo.png" alt="Tekton India" class="nav-logo-img"
+           onerror="this.style.display='none'">
+      <div class="nav-logo-wordmark">
+        <span class="brand-name">Tekton India</span>
+        <span class="brand-tagline">Resin &amp; Wood Furniture</span>
+      </div>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="configurator.html">Custom Table</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="configurator.html" class="btn btn-primary">Design Yours</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false"
+            aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="nav-mobile" id="mobile-nav" aria-label="Mobile navigation">
+  <ul class="nav-mobile-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="configurator.html">Custom Table</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-mobile-cta">
+    <a href="configurator.html" class="btn btn-primary">Design Your Table</a>
+  </div>
+  <div class="nav-mobile-contact">
+    <p>+91 99196 29846</p>
+    <p><a href="mailto:tektonindia.biz@gmail.com">tektonindia.biz@gmail.com</a></p>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════ -->
+<main id="main-content">
+
+  <!-- ── Page hero ── -->
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div class="page-hero-text">
+        <span class="eyebrow">22 Handcrafted Pieces</span>
+        <h1>Our Collection</h1>
+        <p>Every table leaves our Kanpur workshop with a serial number and a story.
+           Filter by category, pattern, or availability to find the one that's yours.</p>
+      </div>
+      <div class="page-hero-cta">
+        <a href="configurator.html" class="btn btn-outline">Design a Custom Table</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── Filter bar ── -->
+  <div class="filter-bar" id="filter-bar" role="search" aria-label="Product filters">
+    <div class="container filter-bar-inner">
+
+      <!-- Row 1: Category + In Stock + Count -->
+      <div class="filter-row filter-row--top">
+        <div class="filter-group" data-filter-group="category" role="group" aria-label="Filter by category">
+          <span class="filter-label" aria-hidden="true">Category</span>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-value="all" aria-pressed="true">All</button>
+            <button class="filter-pill" data-value="dining-table" aria-pressed="false">Dining</button>
+            <button class="filter-pill" data-value="coffee-table" aria-pressed="false">Coffee</button>
+            <button class="filter-pill" data-value="centre-table" aria-pressed="false">Centre</button>
+            <button class="filter-pill" data-value="end-table" aria-pressed="false">End &amp; Side</button>
+          </div>
+        </div>
+
+        <div class="filter-group filter-group--right">
+          <button class="filter-pill" data-filter-group="availability" data-value="in-stock"
+                  aria-pressed="false">In Stock Only</button>
+          <button class="filter-clear hidden" id="filter-clear" aria-label="Clear all filters">
+            Clear filters
+          </button>
+          <span class="product-count" id="product-count" aria-live="polite">— products</span>
+        </div>
+      </div>
+
+      <!-- Row 2: Pattern -->
+      <div class="filter-row filter-row--patterns">
+        <div class="filter-group" data-filter-group="pattern" role="group" aria-label="Filter by resin pattern">
+          <span class="filter-label" aria-hidden="true">Pattern</span>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-value="all" aria-pressed="true">All Patterns</button>
+            <button class="filter-pill" data-value="river" aria-pressed="false">River</button>
+            <button class="filter-pill" data-value="multi-band" aria-pressed="false">Multi-Band</button>
+            <button class="filter-pill" data-value="cookie" aria-pressed="false">Cookie</button>
+            <button class="filter-pill" data-value="spiral" aria-pressed="false">Spiral</button>
+            <button class="filter-pill" data-value="edge-frame" aria-pressed="false">Edge Frame</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /filter-bar -->
+
+
+  <!-- ── Product gallery ── -->
+  <section class="gallery-section" aria-labelledby="gallery-heading">
+    <div class="container">
+      <h2 id="gallery-heading" class="sr-only">Product Gallery</h2>
+      <div class="product-grid product-grid--gallery" id="products-grid" role="list"
+           aria-live="polite" aria-atomic="true">
+        <!-- Rendered by products.js -->
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── Past Pieces (archived) ── -->
+  <section class="past-pieces-section" id="past-pieces-section" aria-labelledby="past-pieces-heading"
+           style="display:none">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Past Pieces</span>
+        <h2 id="past-pieces-heading">Pieces That Found Their Home</h2>
+        <p>These one-of-a-kind tables have been sold. Love the style? We can craft something similar for you.</p>
+      </div>
+      <div class="product-grid product-grid--gallery" id="past-pieces-grid" role="list">
+        <!-- Rendered by products.js -->
+      </div>
+    </div>
+  </section>
+
+</main><!-- /main-content -->
+
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-main">
+
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo" aria-label="Tekton India">
+          <img src="images/brand/logo.png" alt="Tekton India" class="footer-logo-img"
+               onerror="this.style.display='none'">
+          <div class="footer-logo-wordmark">
+            <span class="brand-name">Tekton India</span>
+            <span class="brand-tagline">Resin &amp; Wood Furniture</span>
+          </div>
+        </a>
+        <p class="footer-tagline">Crafted in India.<br>Designed to Last.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/takshanambytekton" target="_blank"
+             rel="noopener" aria-label="Tekton India on Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <nav class="footer-nav" aria-label="Shop navigation">
+          <a href="products.html">All Products</a>
+          <a href="products.html?cat=dining-table">Dining Tables</a>
+          <a href="products.html?cat=coffee-table">Coffee Tables</a>
+          <a href="products.html?cat=centre-table">Centre Tables</a>
+          <a href="products.html?cat=end-table">End &amp; Side Tables</a>
+          <a href="configurator.html">Custom Order</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <nav class="footer-nav" aria-label="Company navigation">
+          <a href="about.html">Our Story</a>
+          <a href="about.html#craft">Our Craft</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="configurator.html">Design Configurator</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <address class="footer-contact" style="font-style:normal;">
+          <div class="footer-contact-item">
+            <span class="label">Visit</span>
+            <span>120/192 (96) Lajpat Nagar<br>Kanpur – 208005, UP, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="label">Call</span>
+            <a href="tel:+919919629846">+91 99196 29846</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="label">Email</span>
+            <a href="mailto:tektonindia.biz@gmail.com">tektonindia.biz@gmail.com</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="label">Instagram</span>
+            <a href="https://www.instagram.com/takshanambytekton" target="_blank"
+               rel="noopener">@takshanambytekton</a>
+          </div>
+        </address>
+      </div>
+
+    </div><!-- /footer-main -->
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; <span id="footer-year">2025</span> Tekton India. All rights reserved.
+      </p>
+      <p class="footer-built-by">
+        Website by <a href="https://www.jagdeepsinghvirdi.com/" target="_blank"
+                      rel="noopener">Jagdeep Singh Virdi</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll-to-top -->
+<button class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script>
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+</script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

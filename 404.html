@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — Tekton India</title>
+  <meta name="description" content="The page you are looking for does not exist. Browse Tekton India's handcrafted resin and wood furniture collection.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0A0B0D">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .notfound-main {
+      min-height: calc(100vh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px var(--pad-x);
+      background:
+        radial-gradient(ellipse 60% 55% at 50% 50%,
+          rgba(46, 204, 113, .04) 0%,
+          transparent 68%);
+    }
+
+    .notfound-inner {
+      max-width: 540px;
+    }
+
+    .notfound-code {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 22vw, 14rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--color-text-faint);
+      line-height: 1;
+      letter-spacing: -.03em;
+      margin-bottom: 8px;
+      user-select: none;
+      opacity: .35;
+    }
+
+    .notfound-inner h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 300;
+      color: var(--color-text-primary);
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+
+    .notfound-inner p {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+
+    .notfound-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .notfound-hint {
+      font-size: .875rem !important;
+      color: var(--color-text-muted) !important;
+      margin-bottom: 0 !important;
+    }
+
+    .notfound-hint a {
+      color: var(--color-brand);
+      border-bottom: 1px solid rgba(46,204,113,.3);
+      padding-bottom: 1px;
+      transition: border-color .2s;
+    }
+    .notfound-hint a:hover { border-color: var(--color-brand); }
+
+    /* Subtle animated grain line */
+    .notfound-divider {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--color-border), transparent);
+      margin: 0 auto 36px;
+      animation: pulse404 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse404 {
+      0%, 100% { opacity: .3; }
+      50%       { opacity: .8; }
+    }
+
+    @media (max-width: 480px) {
+      .notfound-ctas { flex-direction: column; align-items: center; }
+      .notfound-ctas .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<header class="site-nav" role="banner">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Tekton India — Home">
+      <img src="images/brand/logo.png" alt="Tekton India" class="nav-logo-img"
+           onerror="this.style.display='none'">
+      <div class="nav-logo-wordmark">
+        <span class="brand-name">Tekton India</span>
+        <span class="brand-tagline">Resin &amp; Wood Furniture</span>
+      </div>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="configurator.html">Custom Table</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="configurator.html" class="btn btn-primary">Design Yours</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false"
+            aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="nav-mobile" id="mobile-nav" aria-label="Mobile navigation">
+  <ul class="nav-mobile-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="configurator.html">Custom Table</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-mobile-cta">
+    <a href="configurator.html" class="btn btn-primary">Design Yours</a>
+  </div>
+  <div class="nav-mobile-contact">
+    <p>+91 99196 29846</p>
+    <p><a href="mailto:tektonindia.biz@gmail.com">tektonindia.biz@gmail.com</a></p>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════
+     404 CONTENT
+════════════════════════════════════════════ -->
+<main class="notfound-main" id="main-content" aria-label="Page not found">
+  <div class="notfound-inner">
+
+    <span class="notfound-code" aria-hidden="true">404</span>
+
+    <div class="notfound-divider" aria-hidden="true"></div>
+
+    <h1>Page Not Found</h1>
+    <p>The page you&rsquo;re looking for doesn&rsquo;t exist or may have been moved. It happens to the best of us.</p>
+
+    <div class="notfound-ctas">
+      <a href="products.html" class="btn btn-primary">Shop All Tables</a>
+      <a href="index.html" class="btn btn-outline">Go Home</a>
+    </div>
+
+    <p class="notfound-hint">
+      Think something&rsquo;s broken? <a href="contact.html">Let us know.</a>
+    </p>
+
+  </div>
+</main>
+
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-main">
+
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo" aria-label="Tekton India">
+          <img src="images/brand/logo.png" alt="Tekton India" class="footer-logo-img"
+               onerror="this.style.display='none'">
+          <div class="footer-logo-wordmark">
+            <span class="brand-name">Tekton India</span>
+            <span class="brand-tagline">Resin &amp; Wood Furniture</span>
+          </div>
+        </a>
+        <p class="footer-tagline">Crafted in India.<br>Designed to Last.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/takshanambytekton" target="_blank"
+             rel="noopener" aria-label="Tekton India on Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <nav class="footer-nav" aria-label="Shop navigation">
+          <a href="products.html">All Products</a>
+          <a href="products.html?cat=dining-table">Dining Tables</a>
+          <a href="products.html?cat=coffee-table">Coffee Tables</a>
+          <a href="products.html?cat=centre-table">Centre Tables</a>
+          <a href="products.html?cat=end-table">End &amp; Side Tables</a>
+          <a href="configurator.html">Custom Order</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <nav class="footer-nav" aria-label="Company navigation">
+          <a href="about.html">Our Story</a>
+          <a href="about.html#craft">Our Craft</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="configurator.html">Design Configurator</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <address class="footer-contact" style="font-style:normal;">
+          <div class="footer-contact-item">
+            <span class="label">Visit</span>
+            <span>120/192 (96) Lajpat Nagar<br>Kanpur &ndash; 208005, UP, India</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="label">Call</span>
+            <a href="tel:+919919629846">+91 99196 29846</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="label">Email</span>
+            <a href="mailto:tektonindia.biz@gmail.com">tektonindia.biz@gmail.com</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="label">Instagram</span>
+            <a href="https://www.instagram.com/takshanambytekton" target="_blank"
+               rel="noopener">@takshanambytekton</a>
+          </div>
+        </address>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; <span id="footer-year">2025</span> Tekton India. All rights reserved.
+      </p>
+      <p class="footer-built-by">
+        Website by <a href="https://www.jagdeepsinghvirdi.com/" target="_blank"
+                      rel="noopener">Jagdeep Singh Virdi</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script>
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

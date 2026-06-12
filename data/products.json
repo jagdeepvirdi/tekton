@@ -1,0 +1,728 @@
+[
+  {
+    "id": "amber-love",
+    "name": "Amber Love",
+    "subtitle": "Edge Frame Resin End Table",
+    "category": "end-table",
+    "tableType": "edge-frame",
+    "resinPattern": "edge-frame",
+    "resinColor": "golden-amber",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 20499,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/amber-love/1.jpg",
+      "images/products/amber-love/2.jpg"
+    ],
+    "description": "A warm, golden-amber resin border frames the natural mango wood surface of Amber Love, creating a sunlit glow that transforms any corner into a focal point. Handcrafted with precision, the edge-frame technique highlights the contrast between organic grain and luminous resin.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "edge-frame",
+      "golden-amber",
+      "end-table",
+      "mango"
+    ]
+  },
+  {
+    "id": "aureated-jade",
+    "name": "Aureated Jade",
+    "subtitle": "Edge Frame Resin End Table",
+    "category": "end-table",
+    "tableType": "edge-frame",
+    "resinPattern": "edge-frame",
+    "resinColor": "jade-green",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 20100,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/aureated-jade/1.jpg",
+      "images/products/aureated-jade/2.jpg"
+    ],
+    "description": "Aureated Jade pairs deep jade-green resin with rich mango wood in a refined edge-frame design. The jewel-toned border evokes the lustre of polished stone, giving this end table an heirloom quality suited to both contemporary and classic interiors.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "edge-frame",
+      "jade-green",
+      "end-table",
+      "mango"
+    ]
+  },
+  {
+    "id": "azure-allure",
+    "name": "Azure Allure",
+    "subtitle": "Spiral Resin End Table",
+    "category": "end-table",
+    "tableType": "spiral",
+    "resinPattern": "spiral",
+    "resinColor": "ocean-blue",
+    "woodType": "mango",
+    "shape": "round",
+    "price": 20499,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/azure-allure/1.jpg",
+      "images/products/azure-allure/2.jpg"
+    ],
+    "description": "Ocean-blue resin spirals outward from the heart of the wood on Azure Allure, mimicking the motion of deep-sea currents. Each swirl is unique, making this end table a one-of-a-kind piece that brings the calm of the sea into your living space.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "spiral",
+      "ocean-blue",
+      "end-table",
+      "mango"
+    ]
+  },
+  {
+    "id": "black-brook",
+    "name": "Black Brook",
+    "subtitle": "River Resin Coffee Table",
+    "category": "coffee-table",
+    "tableType": "river",
+    "resinPattern": "river",
+    "resinColor": "black",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 42000,
+    "originalPrice": 49000,
+    "inStock": false,
+    "featured": true,
+    "status": "active",
+    "images": [
+      "images/products/black-brook/1.jpg",
+      "images/products/black-brook/2.jpg"
+    ],
+    "description": "A dark river of obsidian resin flows through two slabs of natural mango wood on Black Brook. The deep black channel catches light like still water at midnight, making this coffee table a dramatic centrepiece for modern living rooms.",
+    "dimensions": {
+      "length": 48,
+      "width": 24,
+      "height": 18,
+      "unit": "inches"
+    },
+    "tags": [
+      "river",
+      "black",
+      "coffee-table",
+      "bestseller"
+    ]
+  },
+  {
+    "id": "black-forest",
+    "name": "Black Forest",
+    "subtitle": "Solid Mango Wood Dining Table",
+    "category": "dining-table",
+    "tableType": "full-wood",
+    "resinPattern": null,
+    "resinColor": "none",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 37500,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/black-forest/1.jpg",
+      "images/products/black-forest/2.jpg"
+    ],
+    "description": "A testament to the beauty of raw material, Black Forest is a solid mango wood dining table finished in a deep ebony stain. The grain tells its own story — no resin, no embellishment, just the honest character of wood at its finest.",
+    "dimensions": {
+      "length": 72,
+      "width": 36,
+      "height": 30,
+      "unit": "inches"
+    },
+    "tags": [
+      "full-wood",
+      "dining-table",
+      "mango",
+      "solid-wood"
+    ]
+  },
+  {
+    "id": "blue-eyes",
+    "name": "Blue Eyes",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "ocean-blue",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 16500,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/blue-eyes/1.jpg",
+      "images/products/blue-eyes/2.jpg"
+    ],
+    "description": "Blue Eyes captures the irregular beauty of a natural wood slice, with ocean-blue resin filling every crack and crevice like sunlight filtered through shallow water. The live-edge cookie cut preserves the tree's original silhouette.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "ocean-blue",
+      "end-table",
+      "live-edge",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "celestial-stream-centre",
+    "name": "Celestial Stream",
+    "subtitle": "River Resin Centre Table",
+    "category": "centre-table",
+    "tableType": "river",
+    "resinPattern": "river",
+    "resinColor": "teal-blue",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 69000,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": true,
+    "status": "active",
+    "images": [
+      "images/products/celestial-stream-centre/1.jpg",
+      "images/products/celestial-stream-centre/2.jpg"
+    ],
+    "description": "Celestial Stream is the grand statement piece — a full-size centre table where teal-blue resin carves a luminous river through two matched mango wood slabs. The colour gradient from pale aqua to deep teal mirrors the depth of a glacier stream.",
+    "dimensions": {
+      "length": 60,
+      "width": 30,
+      "height": 18,
+      "unit": "inches"
+    },
+    "tags": [
+      "river",
+      "teal-blue",
+      "centre-table",
+      "statement-piece"
+    ]
+  },
+  {
+    "id": "celestial-stream-end",
+    "name": "Celestial Stream End",
+    "subtitle": "River Resin End Table",
+    "category": "end-table",
+    "tableType": "river",
+    "resinPattern": "river",
+    "resinColor": "teal-blue",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 21200,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/celestial-stream-end/1.jpg",
+      "images/products/celestial-stream-end/2.jpg"
+    ],
+    "description": "A companion piece to the Celestial Stream centre table, this end table carries the same teal-blue river resin aesthetic in a compact form — perfect for bedside placement or to anchor a reading nook.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "river",
+      "teal-blue",
+      "end-table"
+    ]
+  },
+  {
+    "id": "cerulean-glance",
+    "name": "Cerulean Glance",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "cerulean",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 18000,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/cerulean-glance/1.jpg",
+      "images/products/cerulean-glance/2.jpg"
+    ],
+    "description": "Cerulean Glance is a soft, sky-blue cookie table that brings an airy lightness to any room. The cerulean resin fills natural wood fissures with the colour of a clear afternoon sky, making this piece feel effortlessly serene.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "cerulean",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "crimson-bath",
+    "name": "Crimson Bath",
+    "subtitle": "Multi-Band Resin Coffee Table",
+    "category": "coffee-table",
+    "tableType": "multi-band",
+    "resinPattern": "multi-band",
+    "resinColor": "crimson-red",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 40000,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": true,
+    "status": "active",
+    "images": [
+      "images/products/crimson-bath/1.jpg",
+      "images/products/crimson-bath/2.jpg"
+    ],
+    "description": "Bold and unapologetic, Crimson Bath layers deep crimson resin between alternating wood bands to create a rhythmic, almost musical surface. A conversation-starter coffee table for those who want their furniture to say something.",
+    "dimensions": {
+      "length": 48,
+      "width": 24,
+      "height": 18,
+      "unit": "inches"
+    },
+    "tags": [
+      "multi-band",
+      "crimson-red",
+      "coffee-table",
+      "in-stock",
+      "bold"
+    ]
+  },
+  {
+    "id": "dove-tail",
+    "name": "Dove Tail",
+    "subtitle": "Multi-Band Resin Coffee Table",
+    "category": "coffee-table",
+    "tableType": "multi-band",
+    "resinPattern": "multi-band",
+    "resinColor": "slate-grey",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 45000,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": true,
+    "status": "active",
+    "images": [
+      "images/products/dove-tail/1.jpg",
+      "images/products/dove-tail/2.jpg"
+    ],
+    "description": "Dove Tail's muted slate-grey resin bands interlace with warm mango wood in a composition that feels both industrial and organic. The cool grey tones complement concrete, leather, and linen equally — a truly versatile centrepiece.",
+    "dimensions": {
+      "length": 48,
+      "width": 24,
+      "height": 18,
+      "unit": "inches"
+    },
+    "tags": [
+      "multi-band",
+      "slate-grey",
+      "coffee-table",
+      "in-stock",
+      "neutral"
+    ]
+  },
+  {
+    "id": "elysian-basin",
+    "name": "Elysian Basin",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "teal-blue",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 18500,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/elysian-basin/1.jpg",
+      "images/products/elysian-basin/2.jpg"
+    ],
+    "description": "Elysian Basin fills the natural hollows of a mango wood cookie slab with teal-blue resin that pools like a hidden cove. The live-edge form and deep colour make this end table feel discovered rather than designed.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "teal-blue",
+      "end-table"
+    ]
+  },
+  {
+    "id": "emerald-allure",
+    "name": "Emerald Allure",
+    "subtitle": "Spiral Resin End Table",
+    "category": "end-table",
+    "tableType": "spiral",
+    "resinPattern": "spiral",
+    "resinColor": "emerald-green",
+    "woodType": "mango",
+    "shape": "round",
+    "price": 20499,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/emerald-allure/1.jpg",
+      "images/products/emerald-allure/2.jpg"
+    ],
+    "description": "Emerald Allure winds rich, jewel-green resin in an organic spiral across the surface of warm mango wood. The deep emerald catches the light like a polished gemstone, lending this compact end table a surprisingly commanding presence.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "spiral",
+      "emerald-green",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "lilac-illusion",
+    "name": "Lilac Illusion",
+    "subtitle": "Edge Frame Resin End Table",
+    "category": "end-table",
+    "tableType": "edge-frame",
+    "resinPattern": "edge-frame",
+    "resinColor": "lilac",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 20499,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/lilac-illusion/1.jpg",
+      "images/products/lilac-illusion/2.jpg"
+    ],
+    "description": "Lilac Illusion wraps natural mango wood in a soft, dreamlike border of lilac resin. The gentle purple hue softens the rustic grain beneath, creating a piece that feels both ethereal and grounded — equally at home in a bedroom or a study.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "edge-frame",
+      "lilac",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "onyx-rivulet",
+    "name": "Onyx Rivulet",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "black",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 16500,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/onyx-rivulet/1.jpg",
+      "images/products/onyx-rivulet/2.jpg"
+    ],
+    "description": "Onyx Rivulet fills the natural splits of a mango wood cookie slab with glossy black resin that shines like polished obsidian. The high-contrast pairing of warm wood and jet black resin gives this piece a bold, graphic quality.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "black",
+      "end-table"
+    ]
+  },
+  {
+    "id": "periwinkle-nook",
+    "name": "Periwinkle Nook",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "periwinkle",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 17500,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/periwinkle-nook/1.jpg",
+      "images/products/periwinkle-nook/2.jpg"
+    ],
+    "description": "Periwinkle Nook brings a quiet magic to the cookie-cut form — the soft blue-violet resin nestles into each crack like twilight settling into a valley. A gentle, contemplative piece that pairs beautifully with soft furnishings.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "periwinkle",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "royal-resplendent",
+    "name": "Royal Resplendent",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "golden-blue",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 18500,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/royal-resplendent/1.jpg",
+      "images/products/royal-resplendent/2.jpg"
+    ],
+    "description": "Royal Resplendent is a study in opulence — golden-blue resin, shimmering between warm and cool at every angle, fills the live-edge cookie form with a regal depth. No two viewing angles reveal the same colour, making this piece endlessly intriguing.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "golden-blue",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "sable-abyss",
+    "name": "Sable Abyss",
+    "subtitle": "River Resin End Table",
+    "category": "end-table",
+    "tableType": "river",
+    "resinPattern": "river",
+    "resinColor": "black",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 17500,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/sable-abyss/1.jpg",
+      "images/products/sable-abyss/2.jpg"
+    ],
+    "description": "Sable Abyss runs a narrow black resin river between two wood halves, creating the impression of a deep fissure in the earth. Compact and dramatic, this river-style end table brings moody sophistication to any side table placement.",
+    "dimensions": {
+      "length": 18,
+      "width": 18,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "river",
+      "black",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "sapphire-fiord",
+    "name": "Sapphire Fiord",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "sapphire-blue",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 18500,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/sapphire-fiord/1.jpg",
+      "images/products/sapphire-fiord/2.jpg"
+    ],
+    "description": "Sapphire Fiord evokes the stillness of a Scandinavian inlet — deep sapphire resin pools in natural wood cavities with a clarity that seems almost lit from within. The cool blue complements the warm mango grain in a striking, balanced contrast.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "sapphire-blue",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "serene-haven",
+    "name": "Serene Haven",
+    "subtitle": "River Resin Centre Table",
+    "category": "centre-table",
+    "tableType": "river",
+    "resinPattern": "river",
+    "resinColor": "teal-blue",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 34500,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/serene-haven/1.jpg",
+      "images/products/serene-haven/2.jpg"
+    ],
+    "description": "Serene Haven is a mid-size centre table where teal-blue resin flows calmly between two mango wood slabs. The gentle colour, the smooth finish, and the balanced proportions make this piece a natural anchor for a living room styled around comfort and calm.",
+    "dimensions": {
+      "length": 48,
+      "width": 24,
+      "height": 18,
+      "unit": "inches"
+    },
+    "tags": [
+      "river",
+      "teal-blue",
+      "centre-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "snowy-rancid",
+    "name": "Snowy Rancid",
+    "subtitle": "Cookie Resin End Table",
+    "category": "end-table",
+    "tableType": "cookie",
+    "resinPattern": "cookie",
+    "resinColor": "white-pearl",
+    "woodType": "mango",
+    "shape": "freeform-cookie",
+    "price": 17000,
+    "originalPrice": null,
+    "inStock": true,
+    "featured": false,
+    "status": "active",
+    "images": [
+      "images/products/snowy-rancid/1.jpg",
+      "images/products/snowy-rancid/2.jpg"
+    ],
+    "description": "White-pearl resin drifts through the natural grain lines of Snowy Rancid like the first snowfall settling into bark. The luminous, opalescent finish makes this cookie-cut end table feel weightless — a perfect counterpoint to dark wood furniture.",
+    "dimensions": {
+      "length": 20,
+      "width": 16,
+      "height": 22,
+      "unit": "inches"
+    },
+    "tags": [
+      "cookie",
+      "white-pearl",
+      "end-table",
+      "in-stock"
+    ]
+  },
+  {
+    "id": "whispering-woods",
+    "name": "Whispering Woods",
+    "subtitle": "River Resin Dining Table",
+    "category": "dining-table",
+    "tableType": "river",
+    "resinPattern": "river",
+    "resinColor": "forest-green",
+    "woodType": "mango",
+    "shape": "rectangle",
+    "price": 69000,
+    "originalPrice": null,
+    "inStock": false,
+    "featured": true,
+    "status": "active",
+    "images": [
+      "images/products/whispering-woods/1.jpg",
+      "images/products/whispering-woods/2.jpg"
+    ],
+    "description": "Whispering Woods brings the forest indoors — a deep forest-green resin river winds between two large mango wood slabs, evoking moss-covered stones in a stream. At full dining size, this table transforms a meal into an experience.",
+    "dimensions": {
+      "length": 84,
+      "width": 40,
+      "height": 30,
+      "unit": "inches"
+    },
+    "tags": [
+      "river",
+      "forest-green",
+      "dining-table",
+      "statement-piece"
+    ]
+  }
+]
