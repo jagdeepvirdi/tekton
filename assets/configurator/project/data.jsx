@@ -5,12 +5,9 @@
 
 /* ---- Table types (selecting one sets default dimensions, cm) ---- */
 const TABLE_TYPES = [
-  { id: "dining",   name: "Dining",                  blurb: "Seats 6–8, the centrepiece",   dims: { length: 220, width: 100, thickness: 5 }, typeMult: 1.0 },
-  { id: "office",   name: "Office / Conference",     blurb: "Long-format, meeting-ready",    dims: { length: 300, width: 120, thickness: 5 }, typeMult: 1.1 },
-  { id: "coffee",   name: "Coffee / Centre Table",   blurb: "Low lounge centrepiece",        dims: { length: 120, width: 60,  thickness: 4 }, typeMult: 0.7 },
-  { id: "endtable", name: "End / Side Table",        blurb: "Compact bedside / sofa side",   dims: { length: 50,  width: 50,  thickness: 4 }, typeMult: 0.6 },
-  { id: "console",  name: "Console",                 blurb: "Slim, against-the-wall",        dims: { length: 140, width: 40,  thickness: 4 }, typeMult: 0.8 },
-  { id: "deco",     name: "Decorative",              blurb: "Sculptural accent piece",       dims: { length: 90,  width: 90,  thickness: 3 }, typeMult: 0.65 },
+  { id: "dining",   name: "Dining Table",      blurb: "Seats 6–8, the centrepiece",  dims: { length: 220, width: 100, thickness: 4.5 }, typeMult: 1.0 },
+  { id: "coffee",   name: "Coffee Table",      blurb: "Low lounge centrepiece",       dims: { length: 120, width: 60,  thickness: 4.5 }, typeMult: 0.7 },
+  { id: "endtable", name: "Side Table",        blurb: "Compact bedside / sofa side",  dims: { length: 50,  width: 50,  thickness: 4.5 }, typeMult: 0.6 },
 ];
 
 /* ---- Shapes ---- */
@@ -31,22 +28,21 @@ const TRUNK_SIZES = [
   { id: "lg", name: 'Large — 24"',  cm: 61 },
 ];
 
+const THICKNESS_CM = 4.5;   /* standard 1.75 inch slab — not user-adjustable */
+
 /* ---- Dimension slider ranges (cm) ---- */
 const DIM_RANGE = {
-  length:    { min: 60, max: 360, step: 5 },
-  width:     { min: 30, max: 160, step: 5 },
-  thickness: { min: 2,  max: 10,  step: 0.5 },
+  length: { min: 60, max: 360, step: 5 },
+  width:  { min: 30, max: 160, step: 5 },
 };
 
 /* ---- Wood tones. Each defines a tonal ramp for the SVG grain renderer ---- */
 const WOODS = [
-  { id: "walnut", name: "Walnut", rate: 92000,
-    base: "#5A3A24", mid: "#6E4A2E", light: "#8A6240", grain: "#3A2415", sheen: "#A8825A" },
-  { id: "oak",    name: "Oak",    rate: 66000,
-    base: "#A9824F", mid: "#BE9A63", light: "#D4B47E", grain: "#7C5C33", sheen: "#E6D2A8" },
-  { id: "ash",    name: "Ash",    rate: 60000,
-    base: "#C7AE85", mid: "#D8C49E", light: "#E8DABA", grain: "#9C8259", sheen: "#F2E8D2" },
-  { id: "acacia", name: "Acacia", rate: 74000,
+  { id: "teak",   name: "Teak Wood", rate: 98000,
+    base: "#6B4226", mid: "#7D5230", light: "#9A6840", grain: "#4A2D18", sheen: "#B8885A" },
+  { id: "rose",   name: "Rose Wood", rate: 120000,
+    base: "#4A2020", mid: "#5C2A2A", light: "#7A3A3A", grain: "#2E1010", sheen: "#9A5050" },
+  { id: "acacia", name: "Acacia",    rate: 74000,
     base: "#7A4E2A", mid: "#956237", light: "#B68150", grain: "#56331A", sheen: "#C9986A" },
 ];
 
@@ -106,21 +102,21 @@ function computePrice(cfg) {
   const areaM2 = isCookie
     ? (Math.PI / 4) * (cfg.length / 100) * (effW / 100)   // organic oval
     : (cfg.length / 100) * (effW / 100);
-  const thicknessFactor = cfg.thickness / 4;          // 4cm baseline = 1.0
+  const thicknessFactor = THICKNESS_CM / 4;           // fixed 4.5 cm slab
 
-  const material = areaM2 * wood.rate * thicknessFactor * type.typeMult;
+  const woodMaterial  = (2 / 3) * areaM2 * wood.rate * thicknessFactor * type.typeMult;
   const resinAdd = layout.addon;
   const metallic = cfg.metallic ? 12000 : 0;
   const baseAdd  = base.addon;
 
-  const subtotal = material + resinAdd + metallic + baseAdd;
+  const subtotal = woodMaterial + resinAdd + metallic + baseAdd;
   const total = Math.round(subtotal / 100) * 100;
 
   return {
     areaM2,
     breakdown: [
-      { label: `${wood.name} slab · ${areaM2.toFixed(2)} m²`, value: Math.round(material) },
-      { label: `${layout.name} resin work`, value: resinAdd },
+      { label: `${wood.name} slab · 2/3 vol · ${areaM2.toFixed(2)} m²`, value: Math.round(woodMaterial) },
+      { label: `${layout.name} resin work · 1/3 vol`, value: resinAdd },
       ...(cfg.metallic ? [{ label: "Metallic / pearl pigment", value: metallic }] : []),
       { label: `${base.name} base`, value: baseAdd },
     ],
@@ -142,7 +138,7 @@ const STEPS = [
 ];
 
 Object.assign(window, {
-  TABLE_TYPES, SHAPES, TRUNK_SIZES, DIM_RANGE, WOODS, LAYOUTS,
+  TABLE_TYPES, SHAPES, TRUNK_SIZES, DIM_RANGE, THICKNESS_CM, WOODS, LAYOUTS,
   RESIN_COLORS, EDGES, BASES,
   computePrice, formatINR, STEPS,
 });

@@ -392,7 +392,7 @@ function TablePreview({ cfg, accent }) {
       )}
       <g transform={`translate(${x0}, ${y0 - 30})`}>
         <rect x="0" y="-16" width="118" height="24" rx="6" fill="var(--surface-2)" stroke="var(--line)" />
-        <text x="59" y="1" textAnchor="middle" fill="var(--text-dim)" fontFamily="var(--font-mono)" fontSize="13.5" dominantBaseline="middle">{cfg.thickness} cm thick</text>
+        <text x="59" y="1" textAnchor="middle" fill="var(--text-dim)" fontFamily="var(--font-mono)" fontSize="13.5" dominantBaseline="middle">4.5 cm (1.75") · standard</text>
       </g>
 
       {/* ============ BASE INSET ============ */}

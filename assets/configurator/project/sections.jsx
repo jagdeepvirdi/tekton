@@ -184,7 +184,7 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
           : <div className="hint">↳ Round, square &amp; tree-trunk lock width to length for true proportions.</div>}
       </Section>
 
-      <Section n="3" title="Size" value={isCookie ? `<b>${trunk.name}</b> · ⌀${cfg.length} cm` : `<b>${cfg.length}</b> × <b>${effW}</b> × <b>${cfg.thickness}</b> cm`} open={openId === "size"} onToggle={() => toggle("size")}>
+      <Section n="3" title="Size" value={isCookie ? `<b>${trunk.name}</b> · ⌀${cfg.length} cm` : `<b>${cfg.length}</b> × <b>${effW}</b> cm`} open={openId === "size"} onToggle={() => toggle("size")}>
         {isCookie ? (
           <>
             <div className="field-top"><label>Cookie diameter</label></div>
@@ -195,15 +195,14 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
                 </button>
               ))}
             </div>
-            <Slider label="Thickness" value={cfg.thickness} {...DIM_RANGE.thickness} unit=" cm" onChange={(v) => actions.set({ thickness: v })} />
           </>
         ) : (
           <>
             <Slider label="Length" value={cfg.length} {...DIM_RANGE.length} unit=" cm" onChange={(v) => actions.set({ length: v })} />
             <Slider label="Width" value={cfg.width} {...DIM_RANGE.width} unit=" cm" disabled={cfg.shapeLocked} note={`${cfg.length} cm · locked`} onChange={(v) => actions.set({ width: v })} />
-            <Slider label="Thickness" value={cfg.thickness} {...DIM_RANGE.thickness} unit=" cm" onChange={(v) => actions.set({ thickness: v })} />
           </>
         )}
+        <div className="hint">↳ Thickness is standard 4.5 cm (1.75") on all pieces.</div>
       </Section>
 
       <Section n="4" title="Wood &amp; design pattern" value={`<b>${layout.name}</b> · <b>${wood.name}</b>`} open={openId === "wood"} onToggle={() => toggle("wood")}>

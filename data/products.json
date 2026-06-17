@@ -2,8 +2,8 @@
   {
     "id": "amber-love",
     "name": "Amber Love",
-    "subtitle": "Edge Frame Resin End Table",
-    "category": "end-table",
+    "subtitle": "Edge Frame Resin Side Table",
+    "category": "side-table",
     "tableType": "edge-frame",
     "resinPattern": "edge-frame",
     "resinColor": "golden-amber",
@@ -28,15 +28,15 @@
     "tags": [
       "edge-frame",
       "golden-amber",
-      "end-table",
+      "side-table",
       "mango"
     ]
   },
   {
     "id": "aureated-jade",
     "name": "Aureated Jade",
-    "subtitle": "Edge Frame Resin End Table",
-    "category": "end-table",
+    "subtitle": "Edge Frame Resin Side Table",
+    "category": "side-table",
     "tableType": "edge-frame",
     "resinPattern": "edge-frame",
     "resinColor": "jade-green",
@@ -61,15 +61,15 @@
     "tags": [
       "edge-frame",
       "jade-green",
-      "end-table",
+      "side-table",
       "mango"
     ]
   },
   {
     "id": "azure-allure",
     "name": "Azure Allure",
-    "subtitle": "Spiral Resin End Table",
-    "category": "end-table",
+    "subtitle": "Spiral Resin Side Table",
+    "category": "side-table",
     "tableType": "spiral",
     "resinPattern": "spiral",
     "resinColor": "ocean-blue",
@@ -94,7 +94,7 @@
     "tags": [
       "spiral",
       "ocean-blue",
-      "end-table",
+      "side-table",
       "mango"
     ]
   },
@@ -167,8 +167,8 @@
   {
     "id": "blue-eyes",
     "name": "Blue Eyes",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "ocean-blue",
@@ -193,7 +193,7 @@
     "tags": [
       "cookie",
       "ocean-blue",
-      "end-table",
+      "side-table",
       "live-edge",
       "in-stock"
     ]
@@ -201,8 +201,8 @@
   {
     "id": "celestial-stream-centre",
     "name": "Celestial Stream",
-    "subtitle": "River Resin Centre Table",
-    "category": "centre-table",
+    "subtitle": "River Resin Side Table",
+    "category": "side-table",
     "tableType": "river",
     "resinPattern": "river",
     "resinColor": "teal-blue",
@@ -227,15 +227,15 @@
     "tags": [
       "river",
       "teal-blue",
-      "centre-table",
+      "side-table",
       "statement-piece"
     ]
   },
   {
     "id": "celestial-stream-end",
     "name": "Celestial Stream End",
-    "subtitle": "River Resin End Table",
-    "category": "end-table",
+    "subtitle": "River Resin Side Table",
+    "category": "side-table",
     "tableType": "river",
     "resinPattern": "river",
     "resinColor": "teal-blue",
@@ -260,14 +260,14 @@
     "tags": [
       "river",
       "teal-blue",
-      "end-table"
+      "side-table"
     ]
   },
   {
     "id": "cerulean-glance",
     "name": "Cerulean Glance",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "cerulean",
@@ -292,7 +292,7 @@
     "tags": [
       "cookie",
       "cerulean",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
@@ -367,8 +367,8 @@
   {
     "id": "elysian-basin",
     "name": "Elysian Basin",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "teal-blue",
@@ -393,14 +393,14 @@
     "tags": [
       "cookie",
       "teal-blue",
-      "end-table"
+      "side-table"
     ]
   },
   {
     "id": "emerald-allure",
     "name": "Emerald Allure",
-    "subtitle": "Spiral Resin End Table",
-    "category": "end-table",
+    "subtitle": "Spiral Resin Side Table",
+    "category": "side-table",
     "tableType": "spiral",
     "resinPattern": "spiral",
     "resinColor": "emerald-green",
@@ -425,15 +425,15 @@
     "tags": [
       "spiral",
       "emerald-green",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "lilac-illusion",
     "name": "Lilac Illusion",
-    "subtitle": "Edge Frame Resin End Table",
-    "category": "end-table",
+    "subtitle": "Edge Frame Resin Side Table",
+    "category": "side-table",
     "tableType": "edge-frame",
     "resinPattern": "edge-frame",
     "resinColor": "lilac",
@@ -458,15 +458,15 @@
     "tags": [
       "edge-frame",
       "lilac",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "onyx-rivulet",
     "name": "Onyx Rivulet",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "black",
@@ -491,14 +491,14 @@
     "tags": [
       "cookie",
       "black",
-      "end-table"
+      "side-table"
     ]
   },
   {
     "id": "periwinkle-nook",
     "name": "Periwinkle Nook",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "periwinkle",
@@ -523,15 +523,15 @@
     "tags": [
       "cookie",
       "periwinkle",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "royal-resplendent",
     "name": "Royal Resplendent",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "golden-blue",
@@ -556,15 +556,15 @@
     "tags": [
       "cookie",
       "golden-blue",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "sable-abyss",
     "name": "Sable Abyss",
-    "subtitle": "River Resin End Table",
-    "category": "end-table",
+    "subtitle": "River Resin Side Table",
+    "category": "side-table",
     "tableType": "river",
     "resinPattern": "river",
     "resinColor": "black",
@@ -589,15 +589,15 @@
     "tags": [
       "river",
       "black",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "sapphire-fiord",
     "name": "Sapphire Fiord",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "sapphire-blue",
@@ -622,15 +622,15 @@
     "tags": [
       "cookie",
       "sapphire-blue",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "serene-haven",
     "name": "Serene Haven",
-    "subtitle": "River Resin Centre Table",
-    "category": "centre-table",
+    "subtitle": "River Resin Side Table",
+    "category": "side-table",
     "tableType": "river",
     "resinPattern": "river",
     "resinColor": "teal-blue",
@@ -655,15 +655,15 @@
     "tags": [
       "river",
       "teal-blue",
-      "centre-table",
+      "side-table",
       "in-stock"
     ]
   },
   {
     "id": "snowy-rancid",
     "name": "Snowy Rancid",
-    "subtitle": "Cookie Resin End Table",
-    "category": "end-table",
+    "subtitle": "Cookie Resin Side Table",
+    "category": "side-table",
     "tableType": "cookie",
     "resinPattern": "cookie",
     "resinColor": "white-pearl",
@@ -688,7 +688,7 @@
     "tags": [
       "cookie",
       "white-pearl",
-      "end-table",
+      "side-table",
       "in-stock"
     ]
   },

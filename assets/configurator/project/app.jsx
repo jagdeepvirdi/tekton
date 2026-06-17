@@ -21,8 +21,8 @@ function App() {
   const [cfg, setCfg] = useState({
     type: "dining",
     shape: "rect", shapeLocked: false,
-    length: 220, width: 100, thickness: 5,
-    layout: "river", wood: "walnut",
+    length: 220, width: 100, thickness: 4.5,
+    layout: "river", wood: "teak",
     gap: 11, bandResin: 0.34, frameW: 12, trunkSize: "md",
     riverFlow: "organic", riverCount: 1, riverAngle: 0, riverOffset: 0,
     plankSpread: 0.30, frames: 5,
@@ -33,7 +33,11 @@ function App() {
   const [openId, setOpenId] = useState("type");
   const [touched, setTouched] = useState(new Set(["type"]));
   const [modal, setModal] = useState(false);
+  const [renderModal, setRenderModal] = useState(false);
+  const [designId, setDesignId] = useState('');
   const reviewRef = useRef(null);
+
+  const openQuoteModal = () => { setDesignId(generateDesignId()); setModal(true); };
 
   /* ---- apply tweaks to :root ---- */
   useEffect(() => {
@@ -103,12 +107,6 @@ function App() {
   const isCookie = cfg.layout === "cookie";
   const effW = (cfg.shapeLocked || isCookie) ? cfg.length : cfg.width;
 
-  /* ---- price flash ---- */
-  const [flash, setFlash] = useState(false);
-  const prevTotal = useRef(price.total);
-  useEffect(() => {
-    if (prevTotal.current !== price.total) { setFlash(true); const id = setTimeout(() => setFlash(false), 520); prevTotal.current = price.total; return () => clearTimeout(id); }
-  }, [price.total]);
 
   const wood = WOODS.find((w) => w.id === cfg.wood);
   const type = TABLE_TYPES.find((x) => x.id === cfg.type);
@@ -122,7 +120,7 @@ function App() {
   const specs = [
     ["Type", type.name],
     ["Shape", isCookie ? "Tree Trunk / Cookie" : shape.name],
-    ["Dimensions", isCookie ? `⌀ ${cfg.length} cm (${trunk.name}) · ${cfg.thickness} cm thick` : `${cfg.length} × ${effW} × ${cfg.thickness} cm`],
+    ["Dimensions", isCookie ? `⌀ ${cfg.length} cm (${trunk.name}) · 4.5 cm thick` : `${cfg.length} × ${effW} × 4.5 cm`],
     ["Surface area", `${price.areaM2.toFixed(2)} m²`],
     ["Pattern", layout.label],
     ["Wood", wood.name],
@@ -177,30 +175,29 @@ function App() {
               {specs.map(([k, v]) => (
                 <div className="spec-row" key={k}><span className="k">{k}</span><span className="vv">{v}</span></div>
               ))}
-              <div className="breakdown">
-                {price.breakdown.map((b, i) => (
-                  <div className="bd-row" key={i}><span>{b.label}</span><span className="mono">{formatINR(b.value)}</span></div>
-                ))}
-                <div className="bd-total"><span className="pl mono" style={{ color: "var(--text-dim)" }}>Estimated total</span><span className="price">{formatINR(price.total)}</span></div>
+              <div style={{ display:'flex', gap:10, marginTop:20 }}>
+                <button className="btn ghost block" type="button" onClick={() => setRenderModal(true)}>View 3D Preview</button>
+                <button className="btn primary block" type="button" onClick={openQuoteModal}>Get Quote →</button>
               </div>
-              <button className="btn primary block" type="button" onClick={() => setModal(true)}>Request my quote →</button>
-              <div className="hint" style={{ marginTop: 12, justifyContent: "center" }}>Indicative estimate · final quote confirmed by our workshop.</div>
+              <div className="hint" style={{ marginTop:12, justifyContent:"center" }}>
+                Pricing confirmed by our workshop within 2 working days.
+              </div>
             </div>
           </div>
 
           {/* sticky summary */}
           <div className="summary">
-            <div>
-              <div className="pl">Estimated total</div>
-              <span className={"price" + (flash ? " flash" : "")} key={price.total}>{formatINR(price.total)}</span>
-              <div className="est">{type.name} · {wood.name} · {price.areaM2.toFixed(2)} m²</div>
+            <div className="est" style={{ fontSize:13 }}>{type.name} · {wood.name} · {price.areaM2.toFixed(2)} m²</div>
+            <div style={{ display:'flex', gap:8, flexShrink:0 }}>
+              <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}>3D Preview</button>
+              <button className="btn primary" type="button" onClick={openQuoteModal}>Get Quote</button>
             </div>
-            <button className="btn primary" type="button" onClick={() => setModal(true)}>Request quote</button>
           </div>
         </aside>
       </div>
 
-      {modal && <QuoteModal cfg={cfg} specs={specs} price={price} onClose={() => setModal(false)} />}
+      {modal && <QuoteModal cfg={cfg} specs={specs} price={price} designId={designId} onClose={() => setModal(false)} />}
+      {renderModal && <RenderModal cfg={cfg} onClose={() => setRenderModal(false)} />}
 
       {/* ---------- Tweaks ---------- */}
       <TweaksPanel title="Tweaks">
@@ -217,81 +214,137 @@ function App() {
 }
 
 /* ============================================================
-   Quote modal
+   Quote modal — collects contact info, sends price to merchant only
    ============================================================ */
-function QuoteModal({ cfg, specs, price, onClose }) {
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", notes: "" });
-  const [err, setErr] = useState({});
-  const [loading, setLoading] = useState(false);
+function QuoteModal({ cfg, specs, price, designId, onClose }) {
+  const [sent, setSent]           = useState(false);
+  const [form, setForm]           = useState({ name:’’, mobile:’’, email:’’, notes:’’ });
+  const [err, setErr]             = useState({});
+  const [loading, setLoading]     = useState(false);
   const [submitErr, setSubmitErr] = useState(false);
+
+  const upd = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+  const iErr = (k) => err[k] ? { borderColor:’var(--dot)’ } : {};
+
   const submit = () => {
     const e = {};
     if (!form.name.trim()) e.name = 1;
+    if (form.mobile.replace(/\D/g,’’).length < 10) e.mobile = 1;
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) e.email = 1;
     setErr(e);
     if (Object.keys(e).length) return;
-    setLoading(true);
-    setSubmitErr(false);
+    setLoading(true); setSubmitErr(false);
+
     const data = new FormData();
-    data.append("name", form.name);
-    data.append("email", form.email);
-    data.append("_subject", "Custom Table Quote — Tekton India");
-    if (form.notes) data.append("notes", form.notes);
+    data.append(‘design_id’,        designId);
+    data.append(‘name’,             form.name);
+    data.append(‘mobile’,           form.mobile);
+    data.append(‘email’,            form.email);
+    data.append(‘_subject’,         `Quote ${designId} — Tekton India`);
+    data.append(‘_replyto’,         form.email);
+    if (form.notes) data.append(‘notes’, form.notes);
     specs.forEach(([k, v]) => data.append(k, v));
-    data.append("estimated_price", formatINR(price.total));
-    fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
-      method: "POST",
-      body: data,
-      headers: { Accept: "application/json" },
+    data.append(‘estimated_price’,  formatINR(price.total)); /* merchant only */
+
+    fetch(‘https://formspree.io/f/YOUR_FORMSPREE_ID’, {
+      method:’POST’, body:data, headers:{ Accept:’application/json’ },
     })
-      .then((r) => { setLoading(false); r.ok ? setSent(true) : setSubmitErr(true); })
-      .catch(() => { setLoading(false); setSubmitErr(true); });
+      .then(r => { setLoading(false); r.ok ? setSent(true) : setSubmitErr(true); })
+      .catch(()  => { setLoading(false); setSubmitErr(true); });
   };
+
   return (
-    <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="overlay" onMouseDown={e => e.target === e.currentTarget && onClose()}>
       <div className="modal" role="dialog" aria-modal="true">
         {!sent ? (
           <>
-            <h3>Request my quote</h3>
-            <p className="msub">Send us your design and we’ll confirm pricing, timeline &amp; finishes within 2 working days.</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <h3>Request a Quote</h3>
+            <p className="msub">We’ll confirm pricing and timeline within 2 working days.</p>
+
+            {/* design ID badge */}
+            <div style={{ background:’var(--surface-1)’, border:’1px solid var(--line)’, borderRadius:8,
+              padding:’9px 14px’, marginBottom:18, display:’flex’, justifyContent:’space-between’, alignItems:’center’ }}>
+              <span style={{ color:’var(--text-faint)’, fontSize:11, letterSpacing:’0.5px’ }}>DESIGN REF</span>
+              <span style={{ fontFamily:’monospace’, color:’var(--accent)’, fontSize:13, letterSpacing:’1px’ }}>
+                {designId}
+              </span>
+            </div>
+
+            <div style={{ display:’flex’, flexDirection:’column’, gap:14 }}>
               <div>
                 <label className="flbl">Full name</label>
-                <input className="inp" value={form.name} placeholder="Aarav Mehta" style={err.name ? { borderColor: "var(--dot)" } : {}} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <input className="inp" value={form.name} placeholder="Aarav Mehta"
+                  style={iErr(‘name’)} onChange={upd(‘name’)} />
+              </div>
+              <div>
+                <label className="flbl">Mobile number</label>
+                <input className="inp" value={form.mobile} placeholder="+91 98765 43210"
+                  type="tel" style={iErr(‘mobile’)} onChange={upd(‘mobile’)} />
+                {err.mobile && <span style={{ color:’var(--dot)’, fontSize:11, marginTop:4, display:’block’ }}>
+                  Please enter a valid 10-digit mobile number
+                </span>}
               </div>
               <div>
                 <label className="flbl">Email</label>
-                <input className="inp" value={form.email} placeholder="you@example.com" style={err.email ? { borderColor: "var(--dot)" } : {}} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <input className="inp" value={form.email} placeholder="you@example.com"
+                  style={iErr(‘email’)} onChange={upd(‘email’)} />
               </div>
               <div>
-                <label className="flbl">Notes <span style={{ color: "var(--text-faint)" }}>(optional)</span></label>
-                <textarea className="inp" value={form.notes} placeholder="Delivery city, deadline, finish preferences…" onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+                <label className="flbl">Notes <span style={{ color:’var(--text-faint)’ }}>(optional)</span></label>
+                <textarea className="inp" value={form.notes}
+                  placeholder="Delivery city, deadline, finish preferences…" onChange={upd(‘notes’)} />
               </div>
             </div>
-            <div className="breakdown" style={{ marginTop: 18 }}>
-              <div className="bd-row" style={{ color: "var(--text-dim)" }}><span>{specs[0][1]} · {specs[5][1]}</span><span className="mono">{specs[2][1].split(" · ")[0]}</span></div>
-              <div className="bd-total" style={{ paddingTop: 10, marginTop: 6 }}><span className="pl mono" style={{ color: "var(--text-dim)" }}>Estimate</span><span className="price" style={{ fontSize: 22 }}>{formatINR(price.total)}</span></div>
+
+            {/* design summary — no price */}
+            <div className="breakdown" style={{ marginTop:18 }}>
+              <div className="bd-row" style={{ color:’var(--text-dim)’ }}>
+                <span>{specs[0] && specs[0][1]}</span>
+                <span className="mono">{specs[2] && specs[2][1].split(‘ · ‘)[0]}</span>
+              </div>
+              <div className="bd-row" style={{ color:’var(--text-dim)’, paddingTop:6 }}>
+                <span>{specs[3] && specs[3][1]}</span>
+                <span className="mono">{specs[5] && specs[5][1]}</span>
+              </div>
             </div>
+
             {submitErr && (
-              <p style={{ color: "var(--dot)", fontSize: 12, marginTop: 12, marginBottom: 0, lineHeight: 1.5 }}>
-                Submission failed. Please email us at{" "}
-                <a href="mailto:tektonindia.biz@gmail.com" style={{ color: "inherit" }}>tektonindia.biz@gmail.com</a>.
+              <p style={{ color:’var(--dot)’, fontSize:12, marginTop:12, marginBottom:0, lineHeight:1.5 }}>
+                Submission failed. Email us at{‘ ‘}
+                <a href="mailto:tektonindia.biz@gmail.com" style={{ color:’inherit’ }}>
+                  tektonindia.biz@gmail.com
+                </a>
               </p>
             )}
-            <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
-              <button className="btn ghost" type="button" onClick={onClose} disabled={loading} style={{ flex: "0 0 auto" }}>Cancel</button>
+            <div style={{ display:’flex’, gap:10, marginTop:16 }}>
+              <button className="btn ghost" type="button" onClick={onClose}
+                disabled={loading} style={{ flex:’0 0 auto’ }}>Cancel</button>
               <button className="btn primary block" type="button" onClick={submit} disabled={loading}>
-                {loading ? "Sending…" : "Send request →"}
+                {loading ? ‘Sending…’ : ‘Send request →’}
               </button>
             </div>
           </>
         ) : (
-          <div style={{ textAlign: "center", padding: "10px 0" }}>
+          <div style={{ textAlign:’center’, padding:’10px 0’ }}>
             <div className="done-tick">✓</div>
-            <h3>Request received</h3>
-            <p className="msub" style={{ maxWidth: 320, margin: "8px auto 0" }}>Thank you, {form.name.split(" ")[0]}. Our workshop will reach out at <b style={{ color: "var(--text)" }}>{form.email}</b> within 2 working days with your confirmed quote.</p>
-            <button className="btn primary block" type="button" onClick={onClose} style={{ marginTop: 24 }}>Done</button>
+            <h3>Request Received!</h3>
+            <p className="msub" style={{ maxWidth:320, margin:’8px auto 16px’ }}>
+              Thank you, <b>{form.name.split(‘ ‘)[0]}</b>. Our team will reach out at{‘ ‘}
+              <b style={{ color:’var(--text)’ }}>{form.mobile}</b> within 2 working days.
+            </p>
+            <div style={{ background:’var(--surface-1)’, border:’1px solid var(--line)’, borderRadius:8,
+              padding:’12px 24px’, display:’inline-block’, marginBottom:20 }}>
+              <div style={{ color:’var(--text-faint)’, fontSize:11, marginBottom:6, letterSpacing:’0.5px’ }}>
+                YOUR DESIGN REFERENCE
+              </div>
+              <div style={{ fontFamily:’monospace’, color:’var(--accent)’, fontSize:18, letterSpacing:’2px’ }}>
+                {designId}
+              </div>
+              <div style={{ color:’var(--text-dim)’, fontSize:11, marginTop:6 }}>
+                Keep this for follow-up enquiries
+              </div>
+            </div>
+            <button className="btn primary block" type="button" onClick={onClose}>Done</button>
           </div>
         )}
       </div>
