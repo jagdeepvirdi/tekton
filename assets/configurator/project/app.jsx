@@ -65,9 +65,15 @@ function App() {
     set: (partial) => { setCfg((c) => ({ ...c, ...partial })); markTouched(openId); },
     setType: (id) => {
       const ty = TABLE_TYPES.find((x) => x.id === id);
-      setCfg((c) => (c.layout === "cookie"
-        ? { ...c, type: id, thickness: ty.dims.thickness }   // keep cookie diameter
-        : { ...c, type: id, ...ty.dims }));
+      setCfg((c) => {
+        // Dining table: cookie layout and tree-trunk shape are not available
+        if (id === 'dining' && (c.layout === 'cookie' || c.shape === 'trunk')) {
+          return { ...c, type: id, layout: 'river', shape: 'rect', shapeLocked: false, ...ty.dims };
+        }
+        return c.layout === 'cookie'
+          ? { ...c, type: id, thickness: ty.dims.thickness }
+          : { ...c, type: id, ...ty.dims };
+      });
       markTouched("type");
     },
     setShape: (id) => {

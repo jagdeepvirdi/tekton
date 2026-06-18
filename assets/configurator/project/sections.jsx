@@ -154,6 +154,10 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
   const effW = (cfg.shapeLocked || isCookie) ? cfg.length : cfg.width;
   const toggle = (id) => setOpenId(openId === id ? null : id);
 
+  // Tree Trunk shape + Cookie pattern only available for coffee & side tables
+  const availableShapes  = cfg.type === 'dining' ? SHAPES.filter(s => s.id !== 'trunk')  : SHAPES;
+  const availableLayouts = cfg.type === 'dining' ? LAYOUTS.filter(l => l.id !== 'cookie') : LAYOUTS;
+
   return (
     <>
       <Section n="1" title="Table type" value={`<b>${type.name}</b>`} open={openId === "type"} onToggle={() => toggle("type")}>
@@ -167,8 +171,8 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
       </Section>
 
       <Section n="2" title="Shape" value={isCookie ? `<b>Tree Trunk / Cookie</b>` : `<b>${shape.name}</b>`} open={openId === "shape"} onToggle={() => toggle("shape")}>
-        <div className="tiles" style={{ gridTemplateColumns: "repeat(5,1fr)" }}>
-          {SHAPES.map((s) => (
+        <div className="tiles" style={{ gridTemplateColumns: `repeat(${availableShapes.length},1fr)` }}>
+          {availableShapes.map((s) => (
             <button key={s.id} type="button" className={"tile icon" + (cfg.shape === s.id ? " sel" : "")} onClick={() => actions.setShape(s.id)}>
               <ShapeIcon id={s.id} /><div className="tname">{s.name}</div>
             </button>
@@ -213,7 +217,7 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
         {patternOpen ? (
           /* ── full grid: pick a pattern ── */
           <div className="patterns">
-            {LAYOUTS.map((l) => (
+            {availableLayouts.map((l) => (
               <button key={l.id} type="button" className={"pattile" + (cfg.layout === l.id ? " sel" : "")}
                 onClick={() => { actions.setPattern(l.id); setPatternOpen(false); }}>
                 <span className="pic"><PatternIcon id={l.id} /></span>
