@@ -189,10 +189,12 @@ function App() {
           </div>
 
           {/* sticky summary */}
-          <div className="summary" style={{ justifyContent:'flex-end' }}>
-            <div style={{ display:'flex', gap:8 }}>
-              <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}>Preview</button>
-              <button className="btn primary" type="button" onClick={openQuoteModal}>Get Quote</button>
+          <div className="summary" style={{ padding:'14px 20px' }}>
+            <div style={{ display:'flex', gap:10, width:'100%' }}>
+              <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}
+                style={{ flex:1, justifyContent:'center' }}>Preview</button>
+              <button className="btn primary" type="button" onClick={openQuoteModal}
+                style={{ flex:1, justifyContent:'center' }}>Get Quote</button>
             </div>
           </div>
         </aside>
@@ -395,9 +397,7 @@ function PreviewModal({ cfg, onClose }) {
 function QuoteModal({ cfg, specs, price, designId, onClose }) {
   const [sent, setSent]           = useState(false);
   const [form, setForm]           = useState({ name:'', mobile:'', email:'', notes:'' });
-  const [err, setErr]             = useState({});
-  const [loading, setLoading]     = useState(false);
-  const [submitErr, setSubmitErr] = useState(false);
+  const [err, setErr] = useState({});
 
   const upd = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
   const iErr = (k) => err[k] ? { borderColor:'var(--dot)' } : {};
@@ -409,24 +409,22 @@ function QuoteModal({ cfg, specs, price, designId, onClose }) {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) e.email = 1;
     setErr(e);
     if (Object.keys(e).length) return;
-    setLoading(true); setSubmitErr(false);
 
-    const data = new FormData();
-    data.append('design_id',        designId);
-    data.append('name',             form.name);
-    data.append('mobile',           form.mobile);
-    data.append('email',            form.email);
-    data.append('_subject',         `Quote ${designId} — Tekton India`);
-    data.append('_replyto',         form.email);
-    if (form.notes) data.append('notes', form.notes);
-    specs.forEach(([k, v]) => data.append(k, v));
-    data.append('estimated_price',  formatINR(price.total)); /* merchant only */
-
-    fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
-      method:'POST', body:data, headers:{ Accept:'application/json' },
-    })
-      .then(r => { setLoading(false); r.ok ? setSent(true) : setSubmitErr(true); })
-      .catch(()  => { setLoading(false); setSubmitErr(true); });
+    const lines = [
+      `Design Reference: ${designId}`,
+      ``,
+      `Name: ${form.name}`,
+      `Mobile: ${form.mobile}`,
+      `Email: ${form.email}`,
+      ``,
+      ...specs.map(([k, v]) => `${k}: ${v}`),
+      ...(form.notes ? [``, `Notes: ${form.notes}`] : []),
+    ];
+    const mailto = `mailto:tektonindia.biz@gmail.com`
+      + `?subject=${encodeURIComponent('Quote ' + designId + ' — Tekton India')}`
+      + `&body=${encodeURIComponent(lines.join('\n'))}`;
+    window.open(mailto, '_blank');
+    setSent(true);
   };
 
   return (
@@ -484,19 +482,11 @@ function QuoteModal({ cfg, specs, price, designId, onClose }) {
               </div>
             </div>
 
-            {submitErr && (
-              <p style={{ color:'var(--dot)', fontSize:12, marginTop:12, marginBottom:0, lineHeight:1.5 }}>
-                Submission failed. Email us at{' '}
-                <a href="mailto:tektonindia.biz@gmail.com" style={{ color:'inherit' }}>
-                  tektonindia.biz@gmail.com
-                </a>
-              </p>
-            )}
             <div style={{ display:'flex', gap:10, marginTop:16 }}>
               <button className="btn ghost" type="button" onClick={onClose}
-                disabled={loading} style={{ flex:'0 0 auto' }}>Cancel</button>
-              <button className="btn primary block" type="button" onClick={submit} disabled={loading}>
-                {loading ? 'Sending…' : 'Send request →'}
+                style={{ flex:'0 0 auto' }}>Cancel</button>
+              <button className="btn primary block" type="button" onClick={submit}>
+                Send request →
               </button>
             </div>
           </>
