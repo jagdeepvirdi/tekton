@@ -290,14 +290,10 @@ function SideElevation({ cfg }) {
       <rect x={tL} y={topY} width={tableW*0.38} height={slabT} fill={wood.light} />
       <rect x={tR-tableW*0.28} y={topY} width={tableW*0.28} height={slabT} fill={wood.base} />
       {/* resin hint in slab edge */}
-      {(cfg.layout === 'river' || cfg.layout === 'centerplank') && (
+      {cfg.layout === 'river' && (
         <rect x={tL+tableW*0.34} y={topY} width={tableW*0.17} height={slabT}
           fill={rc} opacity={op*0.9} />
       )}
-      {cfg.layout === 'multiband' && [0.07, 0.36, 0.65].map((o, i) => (
-        <rect key={i} x={tL+tableW*o} y={topY} width={tableW*0.12} height={slabT}
-          fill={rc} opacity={op*0.9} />
-      ))}
       {(cfg.layout === 'edgeframe') && (
         <>
           <rect x={tL} y={topY} width={tableW*0.12} height={slabT} fill={rc} opacity={op*0.9} />

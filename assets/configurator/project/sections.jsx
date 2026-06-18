@@ -26,14 +26,6 @@ const PatternIcon = ({ id }) => {
         <g><rect x="6" y="8" width="44" height="24" rx="2" fill="none" stroke="currentColor" strokeWidth="2" opacity=".5" />
           <path d="M6 20 q11 -7 22 0 t22 0" fill="none" stroke={fr} strokeWidth="5" /></g>
       )}
-      {id === "centerplank" && (
-        <g><rect x="6" y="8" width="44" height="24" rx="2" fill="none" stroke="currentColor" strokeWidth="2" opacity=".5" />
-          <rect x="6" y="13" width="44" height="3.4" fill={fr} /><rect x="6" y="23.6" width="44" height="3.4" fill={fr} /></g>
-      )}
-      {id === "multiband" && (
-        <g><rect x="6" y="8" width="44" height="24" rx="2" fill="none" stroke="currentColor" strokeWidth="2" opacity=".5" />
-          <rect x="6" y="8" width="6" height="24" fill={fr} /><rect x="25" y="8" width="6" height="24" fill={fr} /><rect x="44" y="8" width="6" height="24" fill={fr} /></g>
-      )}
       {id === "frames" && (
         <g fill="none" stroke={fr} strokeWidth="2"><rect x="6" y="8" width="44" height="24" /><rect x="13" y="13" width="30" height="14" /><rect x="20" y="17" width="16" height="6" /></g>
       )}

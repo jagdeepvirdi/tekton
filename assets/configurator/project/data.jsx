@@ -51,8 +51,6 @@ const WOODS = [
    resin areas of the chosen pattern. addon = resin-work cost. ---- */
 const LAYOUTS = [
   { id: "river",       name: "Classic River",         label: "River — straight · diagonal · multiple",          blurb: "Resin channel(s) — fully adjustable", addon: 18000, slider: "river" },
-  { id: "centerplank", name: "Center Plank",          label: "Wood | Resin | Wood | Resin | Wood",              blurb: "Centre board framed by twin rivers",  addon: 26000, slider: "plank" },
-  { id: "multiband",   name: "Multi-Band (Dovetail)", label: "Multi-Band — Resin | Wood | Resin | Wood | Resin", blurb: "5 alternating bands · our signature", addon: 40000, slider: "band" },
   { id: "frames",      name: "Nested Frames",         label: "Concentric wood frames inlaid in resin",          blurb: "Geometric tunnel of inlaid frames",   addon: 52000, slider: "frames" },
   { id: "geospiral",   name: "Geometric Spiral",      label: "Square Greek-key resin spiral",                   blurb: "Angular wood spiral set in resin",    addon: 50000, slider: null },
   { id: "spiral",      name: "Spiral Pour",           label: "Spiral Pour — smooth swirl",                      blurb: "Smooth clockwise resin swirl",        addon: 46000, slider: null },

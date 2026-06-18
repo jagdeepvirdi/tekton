@@ -240,17 +240,6 @@ function TablePreview({ cfg, accent }) {
       const yc = cyc + f * 2 * placeHalf + cfg.riverOffset * th * 0.9;
       linearPaths.push(bandPath(cxc - reach, cxc + reach, yc, bandW, cfg.riverFlow === "organic", i * 5 + 4));
     }
-  } else if (cfg.layout === "centerplank") {
-    const bandW = clamp(cfg.gap * pxPerCm, 8, th * 0.22);
-    const reach = diag * 0.62, off = th * cfg.plankSpread;
-    linearPaths = [
-      bandPath(cxc - reach, cxc + reach, cyc - off, bandW, true, 4),
-      bandPath(cxc - reach, cxc + reach, cyc + off, bandW, true, 11),
-    ];
-  } else if (cfg.layout === "multiband") {
-    const rf = cfg.bandResin, wR = (tw * rf) / 3, wW = (tw * (1 - rf)) / 2;
-    const widths = [wR, wW, wR, wW, wR]; let cur = x0;
-    widths.forEach((w, i) => { const xc = cur + w / 2; if (i % 2 === 0) regionPaths.push(wavyVBand(xc, w, y0 - 6, y0 + th + 6, Math.min(7, w * 0.12), i * 3 + 2)); cur += w; });
   } else if (cfg.layout === "edgeframe") {
     const fw = clamp(cfg.frameW * pxPerCm, 10, Math.min(tw, th) * 0.42);
     const inner = buildOutline(cfg.shape, cfg.edge, x0 + fw, y0 + fw, tw - 2 * fw, th - 2 * fw, 0, 7);
