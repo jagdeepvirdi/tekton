@@ -175,10 +175,7 @@ function App() {
               {specs.map(([k, v]) => (
                 <div className="spec-row" key={k}><span className="k">{k}</span><span className="vv">{v}</span></div>
               ))}
-              <div style={{ display:'flex', gap:10, marginTop:20 }}>
-                <button className="btn ghost block" type="button" onClick={() => setRenderModal(true)}>View 3D Preview</button>
-                <button className="btn primary block" type="button" onClick={openQuoteModal}>Get Quote →</button>
-              </div>
+              <button className="btn primary block" type="button" onClick={openQuoteModal} style={{ marginTop:20 }}>Get Quote →</button>
               <div className="hint" style={{ marginTop:12, justifyContent:"center" }}>
                 Pricing confirmed by our workshop within 2 working days.
               </div>
@@ -189,7 +186,7 @@ function App() {
           <div className="summary">
             <div className="est" style={{ fontSize:13 }}>{type.name} · {wood.name} · {price.areaM2.toFixed(2)} m²</div>
             <div style={{ display:'flex', gap:8, flexShrink:0 }}>
-              <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}>3D Preview</button>
+              <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}>Preview</button>
               <button className="btn primary" type="button" onClick={openQuoteModal}>Get Quote</button>
             </div>
           </div>
@@ -197,7 +194,7 @@ function App() {
       </div>
 
       {modal && <QuoteModal cfg={cfg} specs={specs} price={price} designId={designId} onClose={() => setModal(false)} />}
-      {renderModal && <RenderModal cfg={cfg} onClose={() => setRenderModal(false)} />}
+      {renderModal && <PreviewModal cfg={cfg} accent={t.accent} onClose={() => setRenderModal(false)} />}
 
       {/* ---------- Tweaks ---------- */}
       <TweaksPanel title="Tweaks">
@@ -209,6 +206,35 @@ function App() {
         <TweakSection label="Preview" />
         <TweakToggle label="Floor grid" value={t.floorGrid} onChange={(v) => setTweak("floorGrid", v)} />
       </TweaksPanel>
+    </div>
+  );
+}
+
+/* ============================================================
+   2D Preview modal
+   ============================================================ */
+function PreviewModal({ cfg, accent, onClose }) {
+  const type = TABLE_TYPES.find(t => t.id === cfg.type) || TABLE_TYPES[0];
+  const wood = WOODS.find(w => w.id === cfg.wood)       || WOODS[0];
+  return (
+    <div className="overlay" onMouseDown={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal" role="dialog" aria-modal="true"
+        style={{ maxWidth: 760, width: '92vw' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom: 14 }}>
+          <div>
+            <h3 style={{ margin: 0 }}>Table Preview</h3>
+            <p className="msub" style={{ margin:'4px 0 0' }}>{type.name} · {wood.name}</p>
+          </div>
+          <button className="btn ghost" type="button" onClick={onClose}
+            style={{ padding:'6px 14px', flexShrink:0 }}>Close</button>
+        </div>
+        <div style={{ background:'#090A0C', borderRadius: 10, overflow:'hidden', aspectRatio:'1000/720' }}>
+          <TablePreview cfg={cfg} accent={accent} />
+        </div>
+        <p style={{ fontSize:12, color:'var(--text-faint)', marginTop:10, textAlign:'center', marginBottom:0 }}>
+          Top-down view · resin and wood shown to scale
+        </p>
+      </div>
     </div>
   );
 }
