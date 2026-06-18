@@ -175,8 +175,7 @@ function App() {
               {specs.map(([k, v]) => (
                 <div className="spec-row" key={k}><span className="k">{k}</span><span className="vv">{v}</span></div>
               ))}
-              <button className="btn primary block" type="button" onClick={openQuoteModal} style={{ marginTop:20 }}>Get Quote →</button>
-              <div className="hint" style={{ marginTop:12, justifyContent:"center" }}>
+              <div className="hint" style={{ marginTop:20, justifyContent:"center" }}>
                 Pricing confirmed by our workshop within 2 working days.
               </div>
             </div>
@@ -184,7 +183,6 @@ function App() {
 
           {/* sticky summary */}
           <div className="summary">
-            <div className="est" style={{ fontSize:13 }}>{type.name} · {wood.name} · {price.areaM2.toFixed(2)} m²</div>
             <div style={{ display:'flex', gap:8, flexShrink:0 }}>
               <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}>Preview</button>
               <button className="btn primary" type="button" onClick={openQuoteModal}>Get Quote</button>
