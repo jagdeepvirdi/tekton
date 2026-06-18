@@ -3,6 +3,13 @@
    ============================================================ */
 const { useState, useEffect, useRef } = React;
 
+function generateDesignId() {
+  const d = new Date();
+  const date = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const rand = Math.random().toString(36).substring(2,6).toUpperCase();
+  return `TI-${date}-${rand}`;
+}
+
 const FONT_PAIRS = {
   editorial: { display: '"Bricolage Grotesque", serif', body: '"Hanken Grotesk", sans-serif' },
   grotesque: { display: '"Space Grotesk", sans-serif', body: '"Space Grotesk", sans-serif' },
@@ -182,8 +189,8 @@ function App() {
           </div>
 
           {/* sticky summary */}
-          <div className="summary">
-            <div style={{ display:'flex', gap:8, flexShrink:0 }}>
+          <div className="summary" style={{ justifyContent:'flex-end' }}>
+            <div style={{ display:'flex', gap:8 }}>
               <button className="btn ghost" type="button" onClick={() => setRenderModal(true)}>Preview</button>
               <button className="btn primary" type="button" onClick={openQuoteModal}>Get Quote</button>
             </div>
