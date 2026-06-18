@@ -420,7 +420,7 @@ function QuoteModal({ cfg, specs, price, designId, onClose }) {
       ...specs.map(([k, v]) => `${k}: ${v}`),
       ...(form.notes ? [``, `Notes: ${form.notes}`] : []),
     ];
-    const mailto = `mailto:tektonindia.biz@gmail.com`
+    const mailto = `mailto:jagdeep.singh.virdi@gmail.com`
       + `?subject=${encodeURIComponent('Quote ' + designId + ' — Tekton India')}`
       + `&body=${encodeURIComponent(lines.join('\n'))}`;
     window.open(mailto, '_blank');
