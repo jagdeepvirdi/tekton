@@ -218,146 +218,211 @@ function App() {
 }
 
 /* ============================================================
-   2D Preview modal
+   Blueprint preview — architectural line-art elevation
+   Standing figure (left) · Table (centre) · Sitting figure (right)
    ============================================================ */
-/* ── Side elevation SVG: table + base + human scale reference ── */
-function SideElevation({ cfg }) {
-  const W = 720, H = 420;
-  const gY = 390;                          // ground Y
-  const SC = (gY - 30) / 170;             // px per cm, human fills the height
+function BlueprintPreview({ cfg }) {
+  const SVG_H = 450;
+  const gY    = 408;                        // ground line Y
+  const SC    = (gY - 56) / 175;           // ~2.01 px/cm — 175 cm figure fills height
 
   const TABLE_H = { dining: 75, coffee: 45, endtable: 55 };
-  const th  = TABLE_H[cfg.type] || 75;    // table height in cm
-  const tpx = th * SC;                    // table height in px
-  const slabT = Math.round(4.5 * SC);     // slab thickness in px
-
+  const th    = TABLE_H[cfg.type] || 75;
+  const thPx  = th * SC;
+  const slabT = 4.5 * SC;
   const isCookie = cfg.layout === 'cookie';
-  const effW = (cfg.shapeLocked || isCookie) ? cfg.length : cfg.width;
-  const tableW = Math.min(effW * SC * 0.5, 210);  // display width (side = depth)
+  const twCm  = (cfg.shapeLocked || isCookie) ? cfg.length : cfg.width;
+  const twPx  = Math.min(twCm * SC, 252);   // visual width, capped
 
-  const tCX = W * 0.37;
-  const tL  = tCX - tableW / 2;
-  const tR  = tCX + tableW / 2;
-  const topY     = gY - tpx;              // top surface Y
-  const slabBotY = topY + slabT;          // underside of slab
-  const legsH    = tpx - slabT;           // available leg height
+  /* ── X layout: centre table, figures on each side ── */
+  const SVG_W   = 720;
+  const tCX     = SVG_W / 2;
+  const tL      = tCX - twPx / 2;
+  const tR      = tCX + twPx / 2;
+  const tTopY   = gY - thPx;
+  const standCX = tL - 58;
+  const sitCX   = tR + 62;
 
-  const hCX   = W * 0.73;
-  const hH    = 170 * SC;                 // human height in px
-  const hTopY = gY - hH;
+  /* ── palette ── */
+  const FG = 'rgba(228,232,242,0.88)';   // figures + table
+  const DM = 'rgba(120,124,138,0.90)';   // dimension lines & labels
 
-  const wood = WOODS.find(w => w.id === cfg.wood) || WOODS[0];
-  const rc = cfg.resinColor, op = cfg.resinOpacity;
+  const s = SC;   // shorthand
 
-  const legC = '#4A5060', legS = '#363840';
-  const lp1  = tL + tableW * 0.22;
-  const lp2  = tR - tableW * 0.22;
+  /* ─────────────────────────────────────────────
+     STANDING FIGURE  (front-facing, 175 cm)
+  ───────────────────────────────────────────── */
+  const stTopY = gY - 175 * s;
+  const hR     = 11  * s;
+  const hCY    = stTopY + hR;
+  const shW    = 33  * s;   // shoulder width half = shW/2
+  const trW    = 21  * s;   // waist width half    = trW/2
+  const trH    = 50  * s;
+  const trY    = hCY + hR + 4 * s;
+  const hpW    = 27  * s;
+  const hpH    = 13  * s;
+  const hpY    = trY + trH;
+  const lgW    = 10  * s;
+  const lgH    = gY - (hpY + hpH) - 5 * s;
+  const lgGap  = 5   * s;
+  const ftW    = 14  * s;
+  const ftH    = 5   * s;
 
-  const hs      = hH / 170;
-  const headR   = 8  * hs;
-  const bodyTop = hTopY + headR * 2.4;
-  const bodyH   = 55 * hs;
-  const bodyW   = 18 * hs;
+  const standFig = (
+    <g stroke={FG} strokeWidth={1.5} fill="none"
+       strokeLinejoin="round" strokeLinecap="round">
+      {/* head */}
+      <circle cx={standCX} cy={hCY} r={hR} />
+      {/* torso */}
+      <path d={`M${standCX-shW/2},${trY} L${standCX-trW/2},${trY+trH} L${standCX+trW/2},${trY+trH} L${standCX+shW/2},${trY} Z`} />
+      {/* arms */}
+      <line x1={standCX-shW/2}   y1={trY+7*s}  x2={standCX-shW/2-9*s}  y2={trY+trH*0.82} strokeWidth={6*s} />
+      <line x1={standCX+shW/2}   y1={trY+7*s}  x2={standCX+shW/2+9*s}  y2={trY+trH*0.82} strokeWidth={6*s} />
+      {/* hips */}
+      <path d={`M${standCX-trW/2},${hpY} L${standCX-hpW/2},${hpY+hpH} L${standCX+hpW/2},${hpY+hpH} L${standCX+trW/2},${hpY} Z`} />
+      {/* legs */}
+      <rect x={standCX-lgGap/2-lgW} y={hpY+hpH} width={lgW} height={lgH} rx={lgW/2} />
+      <rect x={standCX+lgGap/2}     y={hpY+hpH} width={lgW} height={lgH} rx={lgW/2} />
+      {/* feet */}
+      <rect x={standCX-lgGap/2-lgW-3} y={gY-ftH} width={ftW} height={ftH} rx={2} />
+      <rect x={standCX+lgGap/2-2}     y={gY-ftH} width={ftW} height={ftH} rx={2} />
+    </g>
+  );
 
-  return (
-    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}
-      style={{ display:'block', maxWidth:'100%', borderRadius:10 }}>
-      <rect x={0} y={0} width={W} height={H} fill="#090A0C" />
+  /* ─────────────────────────────────────────────
+     SITTING FIGURE  (profile facing left, ~44 cm seat height)
+  ───────────────────────────────────────────── */
+  const seatY   = gY - 44  * s;
+  const siHR    = 10  * s;
+  const siShY   = seatY - 46 * s;
+  const siHCY   = siShY - siHR - 3 * s;
+  const siShW   = 28  * s;
+  const siTrW   = 19  * s;
+  const thighL  = (sitCX - siTrW/2) - tR - 12;  // thigh reaches toward table
+  const thighW  = 10  * s;
+  const calfH   = 40  * s;
+  const calfW   = 9   * s;
+  const kneeX   = sitCX - siTrW/2 - Math.max(thighL, 30*s);
+  const armExtY = siShY + 13 * s;
+  const cupX    = kneeX - 15 * s;
+  const cupW    = 8  * s;
+  const cupH    = 11 * s;
 
-      {/* shadow */}
-      <ellipse cx={tCX} cy={gY+4} rx={tableW*0.46} ry={5} fill="rgba(0,0,0,0.32)" />
+  const sitFig = (
+    <g stroke={FG} strokeWidth={1.5} fill="none"
+       strokeLinejoin="round" strokeLinecap="round">
+      {/* head — offset left for profile */}
+      <circle cx={sitCX - 5*s} cy={siHCY} r={siHR} />
+      {/* torso */}
+      <path d={`M${sitCX-siShW/2},${siShY} L${sitCX-siTrW/2},${seatY} L${sitCX+siTrW/2},${seatY} L${sitCX+siShW/2},${siShY} Z`} />
+      {/* thighs — horizontal toward table */}
+      <rect x={kneeX} y={seatY-thighW*0.9} width={sitCX-siTrW/2-kneeX} height={thighW} rx={thighW/2} />
+      {/* back thigh slightly offset */}
+      <rect x={kneeX+7*s} y={seatY-thighW*0.9+7*s} width={sitCX+siTrW/4-kneeX-7*s} height={thighW*0.9} rx={thighW/2} />
+      {/* calves — vertical */}
+      <rect x={kneeX-calfW/2}       y={seatY} width={calfW} height={calfH}       rx={calfW/2} />
+      <rect x={kneeX+7*s-calfW/2}   y={seatY} width={calfW} height={calfH*0.88}  rx={calfW/2} />
+      {/* left arm extended, holding coffee */}
+      <line x1={sitCX-siShW/2} y1={armExtY} x2={cupX+cupW} y2={armExtY} strokeWidth={5*s} />
+      {/* coffee cup body */}
+      <rect x={cupX} y={armExtY-cupH*0.55} width={cupW} height={cupH} rx={2} />
+      {/* cup handle */}
+      <path d={`M${cupX+cupW},${armExtY-cupH*0.25} Q${cupX+cupW+6*s},${armExtY} ${cupX+cupW},${armExtY+cupH*0.25}`} />
+      {/* right arm resting down */}
+      <line x1={sitCX+siShW/2} y1={siShY+10*s} x2={sitCX+siShW/2+5*s} y2={seatY} strokeWidth={5*s} />
+    </g>
+  );
 
-      {/* ── base / legs ── */}
-      {cfg.base === 'hairpin' && [lp1, lp2].map((cx, i) => (
-        <g key={i} stroke={legC} strokeWidth={5} strokeLinecap="round" fill="none">
-          <line x1={cx} y1={slabBotY} x2={cx-13} y2={gY} />
-          <line x1={cx} y1={slabBotY} x2={cx+13} y2={gY} />
+  /* ─────────────────────────────────────────────
+     TABLE  (base + slab)
+  ───────────────────────────────────────────── */
+  const legPad = 10 * s;
+  const lp1 = tL + legPad;
+  const lp2 = tR - legPad;
+
+  const tableSVG = (
+    <g stroke={FG} strokeWidth={1.5} fill="none" strokeLinecap="round">
+      {cfg.base === 'hairpin' && [lp1, lp2].map((lx, i) => (
+        <g key={i}>
+          <line x1={lx} y1={tTopY+slabT} x2={lx-11} y2={gY} />
+          <line x1={lx} y1={tTopY+slabT} x2={lx+11} y2={gY} />
         </g>
       ))}
-      {cfg.base === 'uframe' && [lp1, lp2].map((cx, i) => (
-        <g key={i} stroke={legC} strokeWidth={5} strokeLinecap="round" fill="none">
-          <line x1={cx-7} y1={slabBotY} x2={cx-7} y2={gY-2} />
-          <line x1={cx+7} y1={slabBotY} x2={cx+7} y2={gY-2} />
-          <line x1={cx-7} y1={gY-2}     x2={cx+7} y2={gY-2} />
+      {cfg.base === 'uframe' && [lp1, lp2].map((lx, i) => (
+        <g key={i} strokeWidth={2}>
+          <line x1={lx-7} y1={tTopY+slabT} x2={lx-7} y2={gY-1} />
+          <line x1={lx+7} y1={tTopY+slabT} x2={lx+7} y2={gY-1} />
+          <line x1={lx-7} y1={gY-1}        x2={lx+7} y2={gY-1} />
         </g>
       ))}
       {cfg.base === 'pedestal' && (
         <g>
-          <rect x={tCX-5} y={slabBotY} width={10} height={legsH-10}
-            fill={legC} stroke={legS} strokeWidth={1} />
-          <rect x={tCX-tableW*0.21} y={gY-10} width={tableW*0.42} height={10}
-            fill={legC} stroke={legS} strokeWidth={1} rx={3} />
+          <rect x={tCX-5} y={tTopY+slabT} width={10} height={thPx-slabT-9} />
+          <rect x={tCX-twPx*0.22} y={gY-9} width={twPx*0.44} height={9} rx={2} />
         </g>
       )}
-      {cfg.base === 'box' && [lp1, lp2].map((cx, i) => (
-        <rect key={i} x={cx-8} y={slabBotY} width={16} height={legsH}
-          fill={legC} stroke={legS} strokeWidth={1} rx={2} />
+      {cfg.base === 'box' && [lp1, lp2].map((lx, i) => (
+        <rect key={i} x={lx-7} y={tTopY+slabT} width={14} height={thPx-slabT} />
       ))}
+      {/* slab outline */}
+      <rect x={tL} y={tTopY} width={twPx} height={slabT} />
+    </g>
+  );
 
-      {/* ── tabletop slab ── */}
-      <rect x={tL} y={topY} width={tableW} height={slabT} fill={wood.mid} />
-      <rect x={tL} y={topY} width={tableW*0.38} height={slabT} fill={wood.light} />
-      <rect x={tR-tableW*0.28} y={topY} width={tableW*0.28} height={slabT} fill={wood.base} />
-      {/* resin hint in slab edge */}
-      {cfg.layout === 'river' && (
-        <rect x={tL+tableW*0.34} y={topY} width={tableW*0.17} height={slabT}
-          fill={rc} opacity={op*0.9} />
-      )}
-      {(cfg.layout === 'edgeframe') && (
-        <>
-          <rect x={tL} y={topY} width={tableW*0.12} height={slabT} fill={rc} opacity={op*0.9} />
-          <rect x={tR-tableW*0.12} y={topY} width={tableW*0.12} height={slabT} fill={rc} opacity={op*0.9} />
-        </>
-      )}
-      {(cfg.layout === 'cookie' || cfg.layout === 'frames' || cfg.layout === 'spiral' || cfg.layout === 'geospiral') && (
-        <rect x={tL} y={topY} width={tableW} height={slabT} fill={rc} opacity={op*0.35} />
-      )}
-      {/* top sheen */}
-      <rect x={tL} y={topY} width={tableW} height={2} fill="rgba(255,255,255,0.22)" />
+  /* ─────────────────────────────────────────────
+     DIMENSION LINES  (architectural arrows)
+  ───────────────────────────────────────────── */
+  const toLabel = (cm) => `${cm} cm  /  ${Math.round(cm / 2.54)}"`;
+  const dimX  = tL - 22;
+  const dimY  = gY + 26;
+  const midHY = (tTopY + gY) / 2;
 
-      {/* ── ground line ── */}
-      <line x1={30} y1={gY} x2={W-30} y2={gY} stroke="#2A2B2F" strokeWidth={1.5} />
+  const dims = (
+    <g stroke={DM} strokeWidth={1} fill="none">
+      {/* ── height dim (left of table) ── */}
+      <line x1={dimX} y1={tTopY} x2={dimX} y2={gY} strokeDasharray="3,3" />
+      <line x1={dimX-5} y1={tTopY} x2={dimX+5} y2={tTopY} />
+      <line x1={dimX-5} y1={gY}    x2={dimX+5} y2={gY} />
+      <polygon points={`${dimX},${tTopY+2} ${dimX-3},${tTopY+10} ${dimX+3},${tTopY+10}`} fill={DM} stroke="none" />
+      <polygon points={`${dimX},${gY-2}    ${dimX-3},${gY-10}    ${dimX+3},${gY-10}`}    fill={DM} stroke="none" />
+      {/* height label — rotated */}
+      <text x={dimX-10} y={midHY} fill={DM} fontSize={10}
+        fontFamily="'DM Sans',sans-serif" textAnchor="middle" dominantBaseline="middle"
+        transform={`rotate(-90,${dimX-10},${midHY})`}>{toLabel(th)}</text>
 
-      {/* ── human figure ── */}
-      <g fill="rgba(245,246,247,0.12)" stroke="rgba(245,246,247,0.42)"
-        strokeWidth={Math.max(1.2, 1.6*hs)} strokeLinecap="round">
-        <circle cx={hCX} cy={hTopY+headR} r={headR} />
-        <rect x={hCX-bodyW/2} y={bodyTop} width={bodyW} height={bodyH} rx={3*hs} />
-        <line x1={hCX-bodyW/2}   y1={bodyTop+bodyH*0.12} x2={hCX-bodyW*1.1}  y2={bodyTop+bodyH*0.7} />
-        <line x1={hCX+bodyW/2}   y1={bodyTop+bodyH*0.12} x2={hCX+bodyW*1.1}  y2={bodyTop+bodyH*0.7} />
-        <line x1={hCX-bodyW*0.25} y1={bodyTop+bodyH}     x2={hCX-bodyW*0.35} y2={gY} />
-        <line x1={hCX+bodyW*0.25} y1={bodyTop+bodyH}     x2={hCX+bodyW*0.35} y2={gY} />
-      </g>
+      {/* ── width dim (below table) ── */}
+      <line x1={tL} y1={dimY} x2={tR} y2={dimY} strokeDasharray="3,3" />
+      <line x1={tL} y1={dimY-5} x2={tL} y2={dimY+5} />
+      <line x1={tR} y1={dimY-5} x2={tR} y2={dimY+5} />
+      <polygon points={`${tL+2},${dimY}  ${tL+10},${dimY-3}  ${tL+10},${dimY+3}`} fill={DM} stroke="none" />
+      <polygon points={`${tR-2},${dimY}  ${tR-10},${dimY-3}  ${tR-10},${dimY+3}`} fill={DM} stroke="none" />
+      <text x={tCX} y={dimY+14} fill={DM} fontSize={10}
+        fontFamily="'DM Sans',sans-serif" textAnchor="middle">{toLabel(twCm)}</text>
 
-      {/* ── callout: table height ── */}
-      <g stroke="#4A5060" strokeWidth={1} fill="none">
-        <line x1={tL-18} y1={topY} x2={tL-18} y2={gY} strokeDasharray="3,3" />
-        <line x1={tL-24} y1={topY} x2={tL-12} y2={topY} />
-        <line x1={tL-24} y1={gY}   x2={tL-12} y2={gY} />
-      </g>
-      <text x={tL-30} y={(topY+gY)/2} fill="#8A8B91" fontSize={12}
-        fontFamily="'DM Sans',sans-serif" textAnchor="end" dominantBaseline="middle">
-        {th} cm
+      {/* figure labels */}
+      <text x={standCX} y={gY+16} fill={DM} fontSize={9}
+        fontFamily="'DM Sans',sans-serif" textAnchor="middle" letterSpacing="0.4">5′9″ · 175 cm</text>
+      <text x={sitCX}   y={gY+16} fill={DM} fontSize={9}
+        fontFamily="'DM Sans',sans-serif" textAnchor="middle" letterSpacing="0.4">Seated</text>
+
+      {/* table type label */}
+      <text x={tCX} y={tTopY - 14} fill={DM} fontSize={10}
+        fontFamily="'DM Sans',sans-serif" textAnchor="middle" letterSpacing="1.2">
+        {cfg.type === 'dining' ? 'DINING TABLE' : cfg.type === 'coffee' ? 'COFFEE TABLE' : 'SIDE TABLE'}
       </text>
+    </g>
+  );
 
-      {/* ── callout: human height ── */}
-      <g stroke="#4A5060" strokeWidth={1} fill="none">
-        <line x1={hCX+26} y1={hTopY} x2={hCX+26} y2={gY} strokeDasharray="3,3" />
-        <line x1={hCX+21} y1={hTopY} x2={hCX+31} y2={hTopY} />
-        <line x1={hCX+21} y1={gY}    x2={hCX+31} y2={gY} />
-      </g>
-      <text x={hCX+36} y={(hTopY+gY)/2} fill="#8A8B91" fontSize={12}
-        fontFamily="'DM Sans',sans-serif" dominantBaseline="middle">
-        170 cm
-      </text>
-
-      {/* ── table type + height label ── */}
-      <text x={tCX} y={topY-14} fill="#5C626B" fontSize={11}
-        fontFamily="'DM Sans',sans-serif" textAnchor="middle" letterSpacing="1.5">
-        {cfg.type === 'dining' ? 'DINING TABLE'
-          : cfg.type === 'coffee' ? 'COFFEE TABLE'
-          : 'SIDE TABLE'} · {th} CM
-      </text>
+  return (
+    <svg width={SVG_W} height={SVG_H} viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+      style={{ display:'block', width:'100%', borderRadius:10 }}>
+      <rect width={SVG_W} height={SVG_H} fill="#090A0C" />
+      {/* ground */}
+      <line x1={16} y1={gY} x2={SVG_W-16} y2={gY} stroke={DM} strokeWidth={1} />
+      {tableSVG}
+      {standFig}
+      {sitFig}
+      {dims}
     </svg>
   );
 }
@@ -365,26 +430,23 @@ function SideElevation({ cfg }) {
 function PreviewModal({ cfg, onClose }) {
   const type = TABLE_TYPES.find(t => t.id === cfg.type) || TABLE_TYPES[0];
   const wood = WOODS.find(w => w.id === cfg.wood)       || WOODS[0];
-  const th   = { dining: 75, coffee: 45, endtable: 55 }[cfg.type] || 75;
   return (
     <div className="overlay" onMouseDown={e => e.target === e.currentTarget && onClose()}>
       <div className="modal" role="dialog" aria-modal="true"
         style={{ maxWidth: 760, width: '92vw' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom: 14 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:14 }}>
           <div>
-            <h3 style={{ margin: 0 }}>Scale Preview</h3>
-            <p className="msub" style={{ margin:'4px 0 0' }}>
-              {type.name} · {wood.name} · {th} cm high
-            </p>
+            <h3 style={{ margin:0 }}>Scale Preview</h3>
+            <p className="msub" style={{ margin:'4px 0 0' }}>{type.name} · {wood.name}</p>
           </div>
           <button className="btn ghost" type="button" onClick={onClose}
             style={{ padding:'6px 14px', flexShrink:0 }}>Close</button>
         </div>
         <div style={{ background:'#090A0C', borderRadius:10, overflow:'hidden' }}>
-          <SideElevation cfg={cfg} />
+          <BlueprintPreview cfg={cfg} />
         </div>
         <p style={{ fontSize:12, color:'var(--text-faint)', marginTop:10, textAlign:'center', marginBottom:0 }}>
-          Side view · human figure = 170 cm for scale reference
+          Architectural elevation · standing 175 cm · sitting with coffee
         </p>
       </div>
     </div>
