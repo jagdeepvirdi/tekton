@@ -180,7 +180,7 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
           ))}
         </div>
         {isCookie
-          ? <div className="hint">↳ Tree-trunk uses the slab’s natural live-edge contour. Pick any other shape to switch back to a standard form.</div>
+          ? <div className="hint">↳ Tree-trunk uses the slab's natural live-edge contour. Pick any other shape to switch back to a standard form.</div>
           : <div className="hint">↳ Round, square &amp; tree-trunk lock width to length for true proportions.</div>}
       </Section>
 

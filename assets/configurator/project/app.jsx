@@ -218,36 +218,36 @@ function App() {
    ============================================================ */
 function QuoteModal({ cfg, specs, price, designId, onClose }) {
   const [sent, setSent]           = useState(false);
-  const [form, setForm]           = useState({ name:’’, mobile:’’, email:’’, notes:’’ });
+  const [form, setForm]           = useState({ name:'', mobile:'', email:'', notes:'' });
   const [err, setErr]             = useState({});
   const [loading, setLoading]     = useState(false);
   const [submitErr, setSubmitErr] = useState(false);
 
   const upd = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
-  const iErr = (k) => err[k] ? { borderColor:’var(--dot)’ } : {};
+  const iErr = (k) => err[k] ? { borderColor:'var(--dot)' } : {};
 
   const submit = () => {
     const e = {};
     if (!form.name.trim()) e.name = 1;
-    if (form.mobile.replace(/\D/g,’’).length < 10) e.mobile = 1;
+    if (form.mobile.replace(/\D/g,'').length < 10) e.mobile = 1;
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) e.email = 1;
     setErr(e);
     if (Object.keys(e).length) return;
     setLoading(true); setSubmitErr(false);
 
     const data = new FormData();
-    data.append(‘design_id’,        designId);
-    data.append(‘name’,             form.name);
-    data.append(‘mobile’,           form.mobile);
-    data.append(‘email’,            form.email);
-    data.append(‘_subject’,         `Quote ${designId} — Tekton India`);
-    data.append(‘_replyto’,         form.email);
-    if (form.notes) data.append(‘notes’, form.notes);
+    data.append('design_id',        designId);
+    data.append('name',             form.name);
+    data.append('mobile',           form.mobile);
+    data.append('email',            form.email);
+    data.append('_subject',         `Quote ${designId} — Tekton India`);
+    data.append('_replyto',         form.email);
+    if (form.notes) data.append('notes', form.notes);
     specs.forEach(([k, v]) => data.append(k, v));
-    data.append(‘estimated_price’,  formatINR(price.total)); /* merchant only */
+    data.append('estimated_price',  formatINR(price.total)); /* merchant only */
 
-    fetch(‘https://formspree.io/f/YOUR_FORMSPREE_ID’, {
-      method:’POST’, body:data, headers:{ Accept:’application/json’ },
+    fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+      method:'POST', body:data, headers:{ Accept:'application/json' },
     })
       .then(r => { setLoading(false); r.ok ? setSent(true) : setSubmitErr(true); })
       .catch(()  => { setLoading(false); setSubmitErr(true); });
@@ -259,88 +259,88 @@ function QuoteModal({ cfg, specs, price, designId, onClose }) {
         {!sent ? (
           <>
             <h3>Request a Quote</h3>
-            <p className="msub">We’ll confirm pricing and timeline within 2 working days.</p>
+            <p className="msub">We'll confirm pricing and timeline within 2 working days.</p>
 
             {/* design ID badge */}
-            <div style={{ background:’var(--surface-1)’, border:’1px solid var(--line)’, borderRadius:8,
-              padding:’9px 14px’, marginBottom:18, display:’flex’, justifyContent:’space-between’, alignItems:’center’ }}>
-              <span style={{ color:’var(--text-faint)’, fontSize:11, letterSpacing:’0.5px’ }}>DESIGN REF</span>
-              <span style={{ fontFamily:’monospace’, color:’var(--accent)’, fontSize:13, letterSpacing:’1px’ }}>
+            <div style={{ background:'var(--surface-1)', border:'1px solid var(--line)', borderRadius:8,
+              padding:'9px 14px', marginBottom:18, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <span style={{ color:'var(--text-faint)', fontSize:11, letterSpacing:'0.5px' }}>DESIGN REF</span>
+              <span style={{ fontFamily:'monospace', color:'var(--accent)', fontSize:13, letterSpacing:'1px' }}>
                 {designId}
               </span>
             </div>
 
-            <div style={{ display:’flex’, flexDirection:’column’, gap:14 }}>
+            <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
               <div>
                 <label className="flbl">Full name</label>
                 <input className="inp" value={form.name} placeholder="Aarav Mehta"
-                  style={iErr(‘name’)} onChange={upd(‘name’)} />
+                  style={iErr('name')} onChange={upd('name')} />
               </div>
               <div>
                 <label className="flbl">Mobile number</label>
                 <input className="inp" value={form.mobile} placeholder="+91 98765 43210"
-                  type="tel" style={iErr(‘mobile’)} onChange={upd(‘mobile’)} />
-                {err.mobile && <span style={{ color:’var(--dot)’, fontSize:11, marginTop:4, display:’block’ }}>
+                  type="tel" style={iErr('mobile')} onChange={upd('mobile')} />
+                {err.mobile && <span style={{ color:'var(--dot)', fontSize:11, marginTop:4, display:'block' }}>
                   Please enter a valid 10-digit mobile number
                 </span>}
               </div>
               <div>
                 <label className="flbl">Email</label>
                 <input className="inp" value={form.email} placeholder="you@example.com"
-                  style={iErr(‘email’)} onChange={upd(‘email’)} />
+                  style={iErr('email')} onChange={upd('email')} />
               </div>
               <div>
-                <label className="flbl">Notes <span style={{ color:’var(--text-faint)’ }}>(optional)</span></label>
+                <label className="flbl">Notes <span style={{ color:'var(--text-faint)' }}>(optional)</span></label>
                 <textarea className="inp" value={form.notes}
-                  placeholder="Delivery city, deadline, finish preferences…" onChange={upd(‘notes’)} />
+                  placeholder="Delivery city, deadline, finish preferences…" onChange={upd('notes')} />
               </div>
             </div>
 
             {/* design summary — no price */}
             <div className="breakdown" style={{ marginTop:18 }}>
-              <div className="bd-row" style={{ color:’var(--text-dim)’ }}>
+              <div className="bd-row" style={{ color:'var(--text-dim)' }}>
                 <span>{specs[0] && specs[0][1]}</span>
-                <span className="mono">{specs[2] && specs[2][1].split(‘ · ‘)[0]}</span>
+                <span className="mono">{specs[2] && specs[2][1].split(' · ')[0]}</span>
               </div>
-              <div className="bd-row" style={{ color:’var(--text-dim)’, paddingTop:6 }}>
+              <div className="bd-row" style={{ color:'var(--text-dim)', paddingTop:6 }}>
                 <span>{specs[3] && specs[3][1]}</span>
                 <span className="mono">{specs[5] && specs[5][1]}</span>
               </div>
             </div>
 
             {submitErr && (
-              <p style={{ color:’var(--dot)’, fontSize:12, marginTop:12, marginBottom:0, lineHeight:1.5 }}>
-                Submission failed. Email us at{‘ ‘}
-                <a href="mailto:tektonindia.biz@gmail.com" style={{ color:’inherit’ }}>
+              <p style={{ color:'var(--dot)', fontSize:12, marginTop:12, marginBottom:0, lineHeight:1.5 }}>
+                Submission failed. Email us at{' '}
+                <a href="mailto:tektonindia.biz@gmail.com" style={{ color:'inherit' }}>
                   tektonindia.biz@gmail.com
                 </a>
               </p>
             )}
-            <div style={{ display:’flex’, gap:10, marginTop:16 }}>
+            <div style={{ display:'flex', gap:10, marginTop:16 }}>
               <button className="btn ghost" type="button" onClick={onClose}
-                disabled={loading} style={{ flex:’0 0 auto’ }}>Cancel</button>
+                disabled={loading} style={{ flex:'0 0 auto' }}>Cancel</button>
               <button className="btn primary block" type="button" onClick={submit} disabled={loading}>
-                {loading ? ‘Sending…’ : ‘Send request →’}
+                {loading ? 'Sending…' : 'Send request →'}
               </button>
             </div>
           </>
         ) : (
-          <div style={{ textAlign:’center’, padding:’10px 0’ }}>
+          <div style={{ textAlign:'center', padding:'10px 0' }}>
             <div className="done-tick">✓</div>
             <h3>Request Received!</h3>
-            <p className="msub" style={{ maxWidth:320, margin:’8px auto 16px’ }}>
-              Thank you, <b>{form.name.split(‘ ‘)[0]}</b>. Our team will reach out at{‘ ‘}
-              <b style={{ color:’var(--text)’ }}>{form.mobile}</b> within 2 working days.
+            <p className="msub" style={{ maxWidth:320, margin:'8px auto 16px' }}>
+              Thank you, <b>{form.name.split(' ')[0]}</b>. Our team will reach out at{' '}
+              <b style={{ color:'var(--text)' }}>{form.mobile}</b> within 2 working days.
             </p>
-            <div style={{ background:’var(--surface-1)’, border:’1px solid var(--line)’, borderRadius:8,
-              padding:’12px 24px’, display:’inline-block’, marginBottom:20 }}>
-              <div style={{ color:’var(--text-faint)’, fontSize:11, marginBottom:6, letterSpacing:’0.5px’ }}>
+            <div style={{ background:'var(--surface-1)', border:'1px solid var(--line)', borderRadius:8,
+              padding:'12px 24px', display:'inline-block', marginBottom:20 }}>
+              <div style={{ color:'var(--text-faint)', fontSize:11, marginBottom:6, letterSpacing:'0.5px' }}>
                 YOUR DESIGN REFERENCE
               </div>
-              <div style={{ fontFamily:’monospace’, color:’var(--accent)’, fontSize:18, letterSpacing:’2px’ }}>
+              <div style={{ fontFamily:'monospace', color:'var(--accent)', fontSize:18, letterSpacing:'2px' }}>
                 {designId}
               </div>
-              <div style={{ color:’var(--text-dim)’, fontSize:11, marginTop:6 }}>
+              <div style={{ color:'var(--text-dim)', fontSize:11, marginTop:6 }}>
                 Keep this for follow-up enquiries
               </div>
             </div>
