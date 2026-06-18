@@ -139,6 +139,9 @@ function Progress({ steps, openId, doneSet, onJump }) {
    Configurator
    ============================================================ */
 function Configurator({ cfg, actions, openId, setOpenId }) {
+  const { useState } = React;
+  const [patternOpen, setPatternOpen] = useState(false);
+
   const type = TABLE_TYPES.find((t) => t.id === cfg.type);
   const shape = SHAPES.find((s) => s.id === cfg.shape);
   const wood = WOODS.find((w) => w.id === cfg.wood);
@@ -198,29 +201,45 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
       </Section>
 
       <Section n="4" title="Wood &amp; design pattern" value={`<b>${layout.name}</b> · <b>${wood.name}</b>`} open={openId === "wood"} onToggle={() => toggle("wood")}>
-        <div className="field-top"><label>Design pattern</label></div>
-        <div className="patterns">
-          {LAYOUTS.map((l) => (
-            <button key={l.id} type="button" className={"pattile" + (cfg.layout === l.id ? " sel" : "")} onClick={() => actions.setPattern(l.id)}>
-              <span className="pic"><PatternIcon id={l.id} /></span>
-              <span className="pmeta">
-                <span className="tname">{l.name}</span>
-                <span className="plabel">{l.label}</span>
-              </span>
-            </button>
-          ))}
+        <div className="field-top" style={{ marginBottom: 8 }}>
+          <label>Design pattern</label>
+          {!patternOpen && (
+            <button type="button" className="btn ghost"
+              style={{ padding: '4px 12px', fontSize: 11, lineHeight: 1.4 }}
+              onClick={() => setPatternOpen(true)}>Change</button>
+          )}
         </div>
 
-        {layout.slider === "river" && <RiverControls cfg={cfg} actions={actions} />}
-        {layout.slider === "plank" && (
-          <>
-            <Slider label="Resin band width" value={cfg.gap} min={2} max={24} step={1} unit=" cm" onChange={(v) => actions.set({ gap: v })} />
-            <Slider label="Centre board width" value={Math.round(cfg.plankSpread * 100)} min={20} max={42} step={1} unit="%" onChange={(v) => actions.set({ plankSpread: v / 100 })} />
-          </>
+        {patternOpen ? (
+          /* ── full grid: pick a pattern ── */
+          <div className="patterns">
+            {LAYOUTS.map((l) => (
+              <button key={l.id} type="button" className={"pattile" + (cfg.layout === l.id ? " sel" : "")}
+                onClick={() => { actions.setPattern(l.id); setPatternOpen(false); }}>
+                <span className="pic"><PatternIcon id={l.id} /></span>
+                <span className="pmeta">
+                  <span className="tname">{l.name}</span>
+                  <span className="plabel">{l.label}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          /* ── selected pattern tile only ── */
+          <button type="button" className="pattile sel"
+            style={{ width: '100%', cursor: 'default', marginBottom: layout.slider ? 12 : 4 }}>
+            <span className="pic"><PatternIcon id={cfg.layout} /></span>
+            <span className="pmeta">
+              <span className="tname">{layout.name}</span>
+              <span className="plabel">{layout.blurb}</span>
+            </span>
+          </button>
         )}
-        {layout.slider === "band" && <Slider label="Resin band proportion" value={Math.round(cfg.bandResin * 100)} min={18} max={55} step={1} unit="% resin" onChange={(v) => actions.set({ bandResin: v / 100 })} />}
-        {layout.slider === "frames" && <Slider label="Number of frames" value={cfg.frames} min={3} max={8} step={1} unit=" rings" onChange={(v) => actions.set({ frames: v })} />}
-        {layout.slider === "frame" && <Slider label="Resin border width" value={cfg.frameW} min={3} max={28} step={1} unit=" cm" onChange={(v) => actions.set({ frameW: v })} />}
+
+        {/* pattern-specific controls — always visible once pattern chosen */}
+        {!patternOpen && layout.slider === "river" && <RiverControls cfg={cfg} actions={actions} />}
+        {!patternOpen && layout.slider === "frames" && <Slider label="Number of frames" value={cfg.frames} min={3} max={8} step={1} unit=" rings" onChange={(v) => actions.set({ frames: v })} />}
+        {!patternOpen && layout.slider === "frame" && <Slider label="Resin border width" value={cfg.frameW} min={3} max={28} step={1} unit=" cm" onChange={(v) => actions.set({ frameW: v })} />}
 
         <div className="field-top" style={{ marginTop: 4 }}><label>Wood tone</label></div>
         <div className="tiles c4">
