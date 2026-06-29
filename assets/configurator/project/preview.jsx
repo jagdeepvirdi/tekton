@@ -231,9 +231,10 @@ function TablePreview({ cfg, accent }) {
   if (cfg.layout === "river") {
     linearAngle = cfg.riverAngle;
     const n = cfg.riverCount;
-    const bandW = clamp(cfg.gap * pxPerCm, 8, th * (n > 1 ? 0.26 : 0.55));
+    // Enforce ratio: 1 river → 1/3 resin 2/3 wood; 2 rivers → 2/5 resin 3/5 wood; n → n/(2n+1) resin
+    const bandW = th / (2 * n + 1);
     const reach = diag * 0.62;                 // horizontal length (covers rotation)
-    const placeHalf = th * 0.34;               // vertical spread, slab-relative
+    const placeHalf = th * (n - 1) / (2 * n + 1); // even spacing: all sections same width
     linearPaths = [];
     for (let i = 0; i < n; i++) {
       const f = n === 1 ? 0 : (i / (n - 1) - 0.5);

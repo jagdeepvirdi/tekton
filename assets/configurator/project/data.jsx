@@ -58,17 +58,14 @@ const LAYOUTS = [
   { id: "edgeframe",   name: "Edge Frame",            label: "Edge Frame — Resin border with Wood center",      blurb: "Resin border frames a wood centre",   addon: 24000, slider: "frame" },
 ];
 
-/* Catalog resin colour swatches (name · collection · hex) + free picker in UI */
+/* Catalog resin colour swatches (name · collection · hex) */
 const RESIN_COLORS = [
-  { id: "black",      name: "Black",        coll: "Black Brook",            hex: "#0D0F13" },
-  { id: "crimson",    name: "Crimson Red",  coll: "Crimson Bath",           hex: "#B11E2F" },
-  { id: "ocean",      name: "Ocean Blue",   coll: "Azure Allure / Blue Eyes", hex: "#1763B8" },
-  { id: "emerald",    name: "Emerald Green",coll: "Emerald Allure",         hex: "#1FA86B" },
-  { id: "slate",      name: "Slate Grey",   coll: "Dove Tail",              hex: "#5A626B" },
-  { id: "amber",      name: "Golden Amber", coll: "Amber Love",             hex: "#D08A1C" },
-  { id: "periwinkle", name: "Periwinkle",   coll: "Cerulean Glance",        hex: "#6E7DD6" },
-  { id: "lilac",      name: "Lilac / Mauve",coll: "Lilac Illusion",         hex: "#9B6FB0" },
-  { id: "pearl",      name: "White / Pearl",coll: "Snowy Rancid",           hex: "#E4E7EC" },
+  { id: "black",   name: "Black",         coll: "Black Brook",      hex: "#0D0F13" },
+  { id: "teal",    name: "Teal Green",    coll: "Celestial Stream", hex: "#009688" },
+  { id: "ocean",   name: "Ocean Blue",    coll: "Azure Allure",     hex: "#1763B8" },
+  { id: "slate",   name: "Slate Grey",    coll: "Dove Tail",        hex: "#5A626B" },
+  { id: "gold",    name: "Gold",          coll: "Amber Love",       hex: "#D4A017" },
+  { id: "emerald", name: "Emerald Green", coll: "Emerald Allure",   hex: "#1FA86B" },
 ];
 
 /* ---- Edge profiles ---- */
@@ -128,10 +125,10 @@ const formatINR = (n) =>
 const STEPS = [
   { id: "type",   label: "Table type" },
   { id: "shape",  label: "Shape" },
+  { id: "edge",   label: "Edge" },
   { id: "size",   label: "Size" },
   { id: "wood",   label: "Wood & pattern" },
   { id: "resin",  label: "Resin" },
-  { id: "edge",   label: "Edge" },
   { id: "base",   label: "Base & legs" },
 ];
 

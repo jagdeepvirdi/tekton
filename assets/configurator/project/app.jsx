@@ -34,7 +34,7 @@ function App() {
     riverFlow: "organic", riverCount: 1, riverAngle: 0, riverOffset: 0,
     plankSpread: 0.30, frames: 5,
     resinColor: "#1763B8", resinOpacity: 0.85, metallic: false,
-    edge: "live", base: "hairpin",
+    edge: "live", base: "hairpin", baseMaterial: "metal",
   });
 
   const [openId, setOpenId] = useState("type");
@@ -66,9 +66,9 @@ function App() {
     setType: (id) => {
       const ty = TABLE_TYPES.find((x) => x.id === id);
       setCfg((c) => {
-        // Dining table: cookie layout and tree-trunk shape are not available
-        if (id === 'dining' && (c.layout === 'cookie' || c.shape === 'trunk')) {
-          return { ...c, type: id, layout: 'river', shape: 'rect', shapeLocked: false, ...ty.dims };
+        // Dining table: only River pattern is available
+        if (id === 'dining' && c.layout !== 'river') {
+          return { ...c, type: id, layout: 'river', shape: c.shape === 'trunk' ? 'rect' : c.shape, shapeLocked: false, ...ty.dims };
         }
         return c.layout === 'cookie'
           ? { ...c, type: id, thickness: ty.dims.thickness }
@@ -137,9 +137,9 @@ function App() {
     ["Surface area", `${price.areaM2.toFixed(2)} m²`],
     ["Pattern", layout.label],
     ["Wood", wood.name],
-    ["Resin", `${rColor ? rColor.name + " · " + rColor.coll : "Custom " + cfg.resinColor.toUpperCase()} · ${Math.round(cfg.resinOpacity * 100)}%${cfg.metallic ? " · Metallic" : ""}`],
+    ["Resin", rColor ? rColor.name : `Custom ${cfg.resinColor.toUpperCase()}`],
     ["Edge", isCookie ? "Natural live edge" : edge.name],
-    ["Base", base.name],
+    ["Base", `${base.name} · ${cfg.baseMaterial === 'wooden' ? 'Wooden' : 'Metal'}`],
   ];
 
   const scrollToReview = () => reviewRef.current && reviewRef.current.scrollIntoView ? reviewRef.current.parentElement.scrollTo({ top: reviewRef.current.offsetTop - 12, behavior: "smooth" }) : null;

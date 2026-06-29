@@ -272,39 +272,6 @@
     ]
   },
   {
-    "id": "cerulean-glance",
-    "name": "Cerulean Glance",
-    "subtitle": "Cookie Resin Side Table",
-    "category": "side-table",
-    "tableType": "cookie",
-    "resinPattern": "cookie",
-    "resinColor": "cerulean",
-    "woodType": "mango",
-    "shape": "freeform-cookie",
-    "price": 18000,
-    "originalPrice": null,
-    "inStock": true,
-    "featured": false,
-    "status": "active",
-    "images": [
-      "images/products/cerulean-glance/1.jpg",
-      "images/products/cerulean-glance/2.jpg"
-    ],
-    "description": "Cerulean Glance is a soft, sky-blue cookie table that brings an airy lightness to any room. The cerulean resin fills natural wood fissures with the colour of a clear afternoon sky, making this piece feel effortlessly serene.",
-    "dimensions": {
-      "length": 20,
-      "width": 16,
-      "height": 22,
-      "unit": "inches"
-    },
-    "tags": [
-      "cookie",
-      "cerulean",
-      "side-table",
-      "in-stock"
-    ]
-  },
-  {
     "id": "crimson-bath",
     "name": "Crimson Bath",
     "subtitle": "Multi-Band Resin Coffee Table",

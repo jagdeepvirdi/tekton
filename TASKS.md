@@ -286,6 +286,67 @@ Mark Session 9 tasks done in TASKS.md.
 
 ---
 
+## SESSION 10 — Configurator Refinements ✅
+> Completed 2026-06-29
+> Started 2026-06-29
+
+- [x] **Task 1** — Dining Table: restrict Design Pattern to River only (Classic River)
+- [x] **Task 2** — Move Edge option section to after Shape (before Size)
+- [x] **Task 3** — River/Wood ratio enforced in preview: 1 river = 2/3 wood 1/3 resin; 2 rivers = 3/5 wood 2/5 resin; remove Channel width slider (ratio is auto-calculated)
+- [x] **Task 4** — Resin Color options: Black, Teal Green, Ocean Blue, Slate Grey, Gold, Emerald Green (6 swatches, remove custom picker)
+- [x] **Task 5** — Resin section: remove Opacity/translucency slider and Metallic toggle
+- [x] **Task 6** — Base section: add Material Kind segmented control (Metal / Wooden)
+
+---
+
+## SESSION 11 — Quote Flow, Design REF & Email Overhaul ⏳
+
+### Overview
+Wire the configurator "Get Quote" button to a proper submission pipeline:
+- Formspree for tektonindia's notification
+- EmailJS (with Gmail App Password) for auto-reply to the customer with full spec
+- Firebase Firestore to store and retrieve saved designs by Design REF
+
+### Prerequisites (manual steps before coding begins)
+- [ ] Create a new Formspree form for quotes → share the form ID
+- [ ] Create a Firebase project → enable Firestore → share the Firebase config object
+- [ ] Generate a Gmail App Password for `tektonindia.biz@gmail.com` → set up EmailJS account, create a service + template → share the EmailJS Service ID, Template ID, and Public Key
+  - Gmail App Password: Google Account → Security → 2-Step Verification → App Passwords → generate for "Mail / Other"
+  - EmailJS: emailjs.com → free tier (200 emails/month) → connect Gmail service → create email template
+
+### Tasks (implement after prerequisites are complete)
+
+- [ ] **Task 1 — Formspree quote form**: Create new Formspree form. On quote submit, POST full config + customer details to Formspree so tektonindia receives the enquiry.
+
+- [ ] **Task 2 — EmailJS auto-reply to customer**: On quote submit, also call EmailJS to send the customer a confirmation email containing their full "Your Bespoke Specification" (type, shape, wood, resin colour, size, base material, estimated price, Design REF).
+
+- [ ] **Task 3 — Firebase Firestore Design REF storage**: On quote submit, save the full config JSON + `createdAt` timestamp to Firestore. Use the Firestore auto-generated document ID as the Design REF (prefixed `TKT-`). Firestore security rules: create allowed, read allowed, update/delete denied.
+
+- [ ] **Task 4 — 30-day expiry**: When loading a saved design, check `createdAt`. If older than 30 days, show an "This design reference has expired" message. If valid, restore the full configuration.
+
+- [ ] **Task 5 — Revisit Design UI**: Add a "Revisit a saved design" input + button to the configurator page (below the main configurator). User enters their Design REF (e.g. `TKT-abc123`) → fetches from Firestore → restores all config fields in the configurator.
+
+- [ ] **Task 6 — Update QuoteModal**: Replace the current `mailto:` approach entirely. New flow:
+  1. User fills in Name, Mobile, Email, Notes in the modal
+  2. On submit: save to Firestore → get Design REF → POST to Formspree → send EmailJS auto-reply
+  3. Show success screen with the Design REF prominently displayed ("Save this reference: TKT-abc123")
+
+- [ ] **Task 7 — Email templates**: Design the customer auto-reply email template in EmailJS. Must include: Design REF, full spec summary (all 7 config fields), estimated price, 30-day expiry notice, tektonindia contact details.
+
+### Email architecture summary
+| Recipient | Service | From address | Content |
+|---|---|---|---|
+| tektonindia.biz@gmail.com | Formspree | Formspree domain | Customer details + full spec |
+| Customer | EmailJS + Gmail | tektonindia.biz@gmail.com | Full spec + Design REF + expiry notice |
+
+### Security notes
+- Firebase config object is safe to expose in client-side JS (security enforced by Firestore rules)
+- EmailJS public key is safe to expose (secret key stays on EmailJS servers)
+- Gmail App Password is stored on EmailJS servers only — never in source code
+- Do NOT use Gmail API or Google Drive API directly in client-side JS (credentials would be exposed)
+
+---
+
 ## Backlog / V2 Features (after launch)
 - [ ] WhatsApp chat widget (for Indian market — very high conversion)
 - [ ] Product inquiry counter ("12 people inquired about this table this week")

@@ -66,7 +66,7 @@
 
   function placeholderBg(product) {
     return RESIN_PLACEHOLDER[product.resinColor] ||
-      'linear-gradient(135deg,#141518 0%,#1E1F23 100%)';
+      'linear-gradient(135deg,#E8DDD0 0%,#D4C5B0 100%)';
   }
 
   function getProductId() {

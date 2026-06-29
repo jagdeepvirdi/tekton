@@ -93,13 +93,12 @@ function Segmented({ label, value, options, onChange }) {
   );
 }
 
-/* river freedom controls — flow / count / angle / offset / width */
+/* river freedom controls — flow / count / angle / offset */
 function RiverControls({ cfg, actions }) {
   return (
     <div className="rivctl">
       <Segmented label="Flow" value={cfg.riverFlow} options={[{ v: "straight", t: "Straight" }, { v: "organic", t: "Organic" }]} onChange={(v) => actions.set({ riverFlow: v })} />
       <Segmented label="Number of rivers" value={cfg.riverCount} options={[{ v: 1, t: "1" }, { v: 2, t: "2" }, { v: 3, t: "3" }]} onChange={(v) => actions.set({ riverCount: v })} />
-      <Slider label="Channel width" value={cfg.gap} min={2} max={28} step={1} unit=" cm" onChange={(v) => actions.set({ gap: v })} />
       <Slider label="Angle / tilt" value={cfg.riverAngle} min={-45} max={45} step={1} unit="°" onChange={(v) => actions.set({ riverAngle: v })} />
       <Slider label="Offset across slab" value={Math.round(cfg.riverOffset * 100)} min={-40} max={40} step={2} unit="%" onChange={(v) => actions.set({ riverOffset: v / 100 })} />
     </div>
@@ -155,8 +154,9 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
   const toggle = (id) => setOpenId(openId === id ? null : id);
 
   // Tree Trunk shape + Cookie pattern only available for coffee & side tables
-  const availableShapes  = cfg.type === 'dining' ? SHAPES.filter(s => s.id !== 'trunk')  : SHAPES;
-  const availableLayouts = cfg.type === 'dining' ? LAYOUTS.filter(l => l.id !== 'cookie') : LAYOUTS;
+  // Dining table: only River pattern available
+  const availableShapes  = cfg.type === 'dining' ? SHAPES.filter(s => s.id !== 'trunk') : SHAPES;
+  const availableLayouts = cfg.type === 'dining' ? LAYOUTS.filter(l => l.id === 'river') : LAYOUTS;
 
   return (
     <>
@@ -183,7 +183,24 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
           : <div className="hint">↳ Round, square &amp; tree-trunk lock width to length for true proportions.</div>}
       </Section>
 
-      <Section n="3" title="Size" value={isCookie ? `<b>${trunk.name}</b> · ⌀${cfg.length} cm` : `<b>${cfg.length}</b> × <b>${effW}</b> cm`} open={openId === "size"} onToggle={() => toggle("size")}>
+      <Section n="3" title="Edge" value={`<b>${isCookie ? "Live edge" : edge.name}</b>`} open={openId === "edge"} onToggle={() => toggle("edge")}>
+        {isCookie ? (
+          <div className="hint">↳ Tree-trunk slabs always keep their natural live edge.</div>
+        ) : (
+          <>
+            <div className="tiles" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
+              {EDGES.map((e) => (
+                <button key={e.id} type="button" className={"tile icon" + (cfg.edge === e.id ? " sel" : "")} onClick={() => actions.set({ edge: e.id })}>
+                  <EdgeIcon id={e.id} /><div className="tname">{e.name}</div>
+                </button>
+              ))}
+            </div>
+            <div className="hint">↳ {edge.blurb}.</div>
+          </>
+        )}
+      </Section>
+
+      <Section n="4" title="Size" value={isCookie ? `<b>${trunk.name}</b> · ⌀${cfg.length} cm` : `<b>${cfg.length}</b> × <b>${effW}</b> cm`} open={openId === "size"} onToggle={() => toggle("size")}>
         {isCookie ? (
           <>
             <div className="field-top"><label>Cookie diameter</label></div>
@@ -204,10 +221,10 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
         <div className="hint">↳ Thickness is standard 4.5 cm (1.75") on all pieces.</div>
       </Section>
 
-      <Section n="4" title="Wood &amp; design pattern" value={`<b>${layout.name}</b> · <b>${wood.name}</b>`} open={openId === "wood"} onToggle={() => toggle("wood")}>
+      <Section n="5" title="Wood &amp; design pattern" value={`<b>${layout.name}</b> · <b>${wood.name}</b>`} open={openId === "wood"} onToggle={() => toggle("wood")}>
         <div className="field-top" style={{ marginBottom: 8 }}>
           <label>Design pattern</label>
-          {!patternOpen && (
+          {!patternOpen && availableLayouts.length > 1 && (
             <button type="button" className="btn ghost"
               style={{ padding: '4px 12px', fontSize: 11, lineHeight: 1.4 }}
               onClick={() => setPatternOpen(true)}>Change</button>
@@ -235,7 +252,7 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
             <span className="pic"><PatternIcon id={cfg.layout} /></span>
             <span className="pmeta">
               <span className="tname">{layout.name}</span>
-              <span className="plabel">{layout.blurb}</span>
+              <span className="plabel">{cfg.type === 'dining' ? 'Only pattern available for dining tables' : layout.blurb}</span>
             </span>
           </button>
         )}
@@ -256,8 +273,8 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
         </div>
       </Section>
 
-      <Section n="5" title="Resin" value={`<b>${rColor ? rColor.name : "Custom"}</b> · <b>${Math.round(cfg.resinOpacity * 100)}%</b>${cfg.metallic ? " · Metallic" : ""}`} open={openId === "resin"} onToggle={() => toggle("resin")}>
-        <div className="field-top"><label>Resin colour</label><span className="val mono" style={{ fontSize: 12 }}>{rColor ? rColor.coll : "Custom"}</span></div>
+      <Section n="6" title="Resin colour" value={`<b>${rColor ? rColor.name : "Custom"}</b>`} open={openId === "resin"} onToggle={() => toggle("resin")}>
+        <div className="field-top"><label>Resin colour</label></div>
         <div className="swatches c3">
           {RESIN_COLORS.map((c) => (
             <button key={c.id} type="button" className={"cswatch" + (cfg.resinColor.toLowerCase() === c.hex.toLowerCase() ? " sel" : "")} onClick={() => actions.set({ resinColor: c.hex })}>
@@ -265,34 +282,11 @@ function Configurator({ cfg, actions, openId, setOpenId }) {
               <span className="cmeta"><span className="cn">{c.name}</span><span className="cc">{c.coll}</span></span>
             </button>
           ))}
-          <label className={"cswatch custom" + (!rColor ? " sel" : "")}>
-            <span className="csw" style={{ background: !rColor ? cfg.resinColor : "conic-gradient(from 0deg,#f43,#fd3,#3f6,#3cf,#63f,#f3a,#f43)" }} />
-            <span className="cmeta"><span className="cn">Custom</span><span className="cc mono">{!rColor ? cfg.resinColor.toUpperCase() : "Pick any"}</span></span>
-            <input type="color" value={cfg.resinColor} onChange={(e) => actions.set({ resinColor: e.target.value })} style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer" }} />
-          </label>
         </div>
-        <Slider label="Opacity / translucency" value={Math.round(cfg.resinOpacity * 100)} min={20} max={100} step={5} unit="%" onChange={(v) => actions.set({ resinOpacity: v / 100 })} />
-        <Toggle name="Metallic / pearl pigment" blurb="Adds shimmer & depth to the pour" on={cfg.metallic} onChange={(v) => actions.set({ metallic: v })} />
       </Section>
 
-      <Section n="6" title="Edge" value={`<b>${edge.name}</b>`} open={openId === "edge"} onToggle={() => toggle("edge")}>
-        {isCookie ? (
-          <div className="hint">↳ Tree-trunk slabs always keep their natural live edge.</div>
-        ) : (
-          <>
-            <div className="tiles" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
-              {EDGES.map((e) => (
-                <button key={e.id} type="button" className={"tile icon" + (cfg.edge === e.id ? " sel" : "")} onClick={() => actions.set({ edge: e.id })}>
-                  <EdgeIcon id={e.id} /><div className="tname">{e.name}</div>
-                </button>
-              ))}
-            </div>
-            <div className="hint">↳ {edge.blurb}.</div>
-          </>
-        )}
-      </Section>
-
-      <Section n="7" title="Base &amp; legs" value={`<b>${base.name}</b>`} open={openId === "base"} onToggle={() => toggle("base")}>
+      <Section n="7" title="Base &amp; legs" value={`<b>${base.name}</b> · ${cfg.baseMaterial === 'wooden' ? 'Wooden' : 'Metal'}`} open={openId === "base"} onToggle={() => toggle("base")}>
+        <Segmented label="Material" value={cfg.baseMaterial || 'metal'} options={[{ v: "metal", t: "Metal" }, { v: "wooden", t: "Wooden" }]} onChange={(v) => actions.set({ baseMaterial: v })} />
         <div className="tiles c2">
           {BASES.map((b) => (
             <button key={b.id} type="button" className={"tile" + (cfg.base === b.id ? " sel" : "")} onClick={() => actions.set({ base: b.id })}>

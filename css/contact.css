@@ -2,6 +2,7 @@
    TEKTON INDIA — Contact Page
    ============================================================ */
 
+[hidden] { display: none !important; }
 
 /* ── Hero ── */
 
@@ -9,7 +10,7 @@
   padding: clamp(80px, 12vw, 136px) 0 clamp(56px, 8vw, 88px);
   background:
     radial-gradient(ellipse 80% 55% at 50% 0%,
-      rgba(46, 204, 113, .065) 0%,
+      rgba(193, 123, 64, .065) 0%,
       transparent 68%);
   text-align: center;
   border-bottom: 1px solid var(--color-border);
@@ -133,7 +134,7 @@
 .form-group textarea:focus,
 .form-group .select-wrap select:focus {
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px rgba(46, 204, 113, .12);
+  box-shadow: 0 0 0 3px rgba(193, 123, 64, .12);
 }
 
 .form-group input[aria-invalid="true"],
@@ -218,8 +219,8 @@
 /* ── Success state ── */
 
 .form-success {
-  background: rgba(46, 204, 113, .06);
-  border: 1px solid rgba(46, 204, 113, .2);
+  background: rgba(193, 123, 64, .06);
+  border: 1px solid rgba(193, 123, 64, .2);
   border-radius: var(--radius);
   padding: clamp(32px, 5vw, 56px) clamp(24px, 4vw, 48px);
   display: flex;
@@ -234,7 +235,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(46, 204, 113, .1);
+  background: rgba(193, 123, 64, .1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,7 +318,7 @@
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
-  background: rgba(46, 204, 113, .07);
+  background: rgba(193, 123, 64, .07);
   display: flex;
   align-items: center;
   justify-content: center;
